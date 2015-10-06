@@ -2,6 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="icon" type="image/png" href="resources/happy.png" />
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<title>Tweelings</title>
 </head>
@@ -12,66 +13,31 @@
 	<div id="page">
 		<div id="result" class="bloc">
 			<h2>Results</h2>
-			<ul id="tweets">
-				<li>Bonjour. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien. Je vais bien.</li>
-				<li>Je suis là. Bonjour !</li>
-				<li>Salut. Hello. Bonjour.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-				<li>Bonjour madame.</li>
-			</ul>
+			<div id="empty">
+				No results.
+			</div>
+			<div id="stats">
+				<div class="stats" id="smiley">
+					<img src='resources/loupe.png'>
+				</div>
+				<div class="stats" id="feelings-bar">
+					<div class="feelings" id="good">1</div><div class="feelings" id="bad">1</div>
+				</div>
+			</div>
+			<ul id="tweets"></ul>
 		</div>
 		<div id="search-config" class="bloc">
 			<h2>
 				<img src="resources/loupe.png">
 				Search / Config
 			</h2>
-			<form action="/search">
+			<form action="#" onsubmit="loadCSV();return false">
 				<input id="search-input" type="text" placeholder="Recherchez sur Twitter">
 			</form>
 		</div>
 	</div>
+	<script type="text/javascript" src="javascript/search.js"></script>
+	<script type="text/javascript" src="javascript/interface.js"></script>
+	<script type="text/javascript" src="javascript/main.js"></script>
 </body>
 </html>
