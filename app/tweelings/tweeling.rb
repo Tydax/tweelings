@@ -6,14 +6,14 @@ require 'tweelings/utils'
 #
 # Author:: Armand (Tydax) BOUR
 class Tweeling
-    attr_accessor: :id,
-                   :id_twitter,
-                   :theme,
-                   :author,
-                   :text,
-                   :date,
-                   :criteria,
-                   :notation 
+    attr_accessor :id,
+                  :id_twitter,
+                  :theme,
+                  :author,
+                  :text,
+                  :date,
+                  :criteria,
+                  :notation 
 
 
     def initialize(id, id_twitter, theme, author, text, date, criteria, notation)
@@ -28,8 +28,8 @@ class Tweeling
     end
 
     ##
-    # Converts the tweeling to an array. Used for CSV convertion.
-    def to_a
+    # Converts the tweeling to a simple array. Used for CSV convertion.
+    def to_simple_a
         [@id, @id,@theme, @author, @text, @date, @criteria, @notation]        
     end
 
@@ -42,4 +42,33 @@ class Tweeling
                     tweet.created_at,
                     criteria,
                     -1)
+    end
+
+    def to_a
+        [
+            "id"         => @id,
+            "id_twitter" => @id_twitter,
+            "theme"      => @theme,
+            "author"     => @author,
+            "text"       => @text,
+            "date"       => @date,
+            "criteria"   => @criteria,
+            "notation"   => @notation
+        ]
+    end
+=begin
+    def to_json
+        "{
+      \"id\":           \"#{@id}\",
+      \"id_twitter\":   \"#{@id_twitter}\",
+      \"theme\":        \"#{@theme}\",
+      \"author\":       \"#{@author}\",
+      \"text\":         \"#{@text}\",
+      \"date\":         \"#{@date}\",
+      \"criteria\":     \"#{@criteria}\",
+      \"notation \":    \"#{@notation}\"
+    }"
+    end
+=end
+
 end

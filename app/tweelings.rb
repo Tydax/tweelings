@@ -1,3 +1,7 @@
+require 'tweelings/ajaxview'
 require 'tweelings/algorithm'
+require 'tweelings/core'
+require 'tweelings/databasecsv'
+require 'tweelings/tweeling'
 require 'tweelings/twitterclient'
 require 'tweelings/utils'

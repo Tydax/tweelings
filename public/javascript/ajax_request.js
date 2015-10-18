@@ -14,14 +14,17 @@ function sendRequest(type, path, callback) {
 
     // When given a response, call the callback function
     xhr.addEventListener("readystatechange", function() {
-
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            callback(xhr.responseText);
+        }
     }, false);
 
     xhr.send(parameters)
 }
 
 function fetch_tweet() {
-
+    var form = document.getElementById("search-form");
+    
 }
 
 function CSVToArray( strData, strDelimiter ) {

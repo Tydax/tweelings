@@ -9,8 +9,17 @@ require 'twitter'
 #
 # Author:: Armand (Tydax) BOUR
 class Utils
+    # TODO: delete this useless method...
     def self.theme_from_criteria(criteria)
-        theme = "#{criteria[:word]}"
-        theme
+        theme = "#{criteria[:theme]}"
+    end
+
+
+    def self.tweelings_to_a(array)
+        result = []
+        array.each do |tweeling|
+            result.push(tweeling.to_a)
+        end
+        result
     end
 end
