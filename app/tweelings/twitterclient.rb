@@ -28,6 +28,9 @@ class TwitterClient
     ##
     # Fetches all tweets with the specified criteria.
     def fetch_tweets(criteria)
-        return @client.search(Utils.request_from_criteria(criteria)).take(criteria[:number])
+        tweets = @client.search(Utils.request_from_criteria(criteria))
+        
+        # Take a certain number of tweets if indicated a limit
+        criteria[:number] ? tweets.take(criteria[:number]) : tweets
     end
 end

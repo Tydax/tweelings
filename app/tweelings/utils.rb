@@ -9,8 +9,8 @@ require 'twitter'
 #
 # Author:: Armand (Tydax) BOUR
 class Utils
-    def self.request_from_criteria(criteria)
-        res = "#{criteria[:word]}"
-        return res
+    def self.theme_from_criteria(criteria)
+        theme = "#{criteria[:word]}"
+        theme
     end
 end

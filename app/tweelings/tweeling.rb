@@ -1,3 +1,6 @@
+
+require 'tweelings/utils'
+
 ##
 # Class defining an annoted tweet object.
 #
@@ -25,15 +28,18 @@ class Tweeling
     end
 
     ##
-    # Converts the specified array to a new tweeling object.
-    def self.from_a(array)
-        Tweeling.new(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
-    end
-
-    ##
     # Converts the tweeling to an array. Used for CSV convertion.
     def to_a
         [@id, @id,@theme, @author, @text, @date, @criteria, @notation]        
     end
 
+    def self.from_raw(tweet, criteria)
+        Tweeling.new(-1,
+                    tweet.id,
+                    Utils.theme_from_criteria(criteria),
+                    tweet.user.screen_name,
+                    tweet.text,
+                    tweet.created_at,
+                    criteria,
+                    -1)
 end

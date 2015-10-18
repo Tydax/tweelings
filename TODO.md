@@ -9,6 +9,7 @@
 ## Database
 * Implémenter la numérotation de lignes dans les fichiers .csv
 * Implémenter la suppression de ligne(s) dans les fichiers .csv
+* Implémenter le repérage de doublons
 
 ## Algorithmes
 * Implémentation d’un algorithme naïf en utilisant un dictionnaire de mots clés : Mots+ & Mots-
@@ -28,5 +29,8 @@
 * Ajout des éléments d'interface nécessaires :
     * Critère de recherche
     * Choix d'algorithmes pour les résultats
-    * (+) Popup avec barre de progression avec information sur l’avancement en utilisant les retours Ajax pour tenir au courant l’interface graphique de l’avancée ?
+    * (+) Popup avec barre de progression avec information sur l’avancement en utilisant les retours Ajax pour notifier l’interface graphique de l’avancée ?
     * Onglet de configuration du proxy
+
+## Documentation
+* Compléter et l’écrire proprement en suivant des conventions (YARD serait super !! (basé sur RDoc mais propose des tas de tags utiles semblables à JavaDoc !!))

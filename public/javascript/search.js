@@ -1,19 +1,27 @@
-function loadCSV() {   
-	var request = new XMLHttpRequest();
-	request.open('GET', 'data/database.csv', false);
-	request.send();  
-	var strData = request.responseText;
+/* 
+ * Sends an Ajax request.
+ * type: type of request (GET or POST)
+ * path: the path where to send the request
+ * callback: the function to call when the request is done
+ * parameter: the parameters written in a json formatted string
+ */
+function sendRequest(type, path, callback) {
+    // Load file
+    var xhr = new XMLHttpRequest();
+    xhr.overrideMimetype("application/json");
+    xhr.open(type, path, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-	var arrData = CSVToArray(strData);
+    // When given a response, call the callback function
+    xhr.addEventListener("readystatechange", function() {
 
-	for (var i = 0; i < arrData.length - 1; i++) {
-		var li = document.createElement("li");
-		li.innerHTML += arrData[i][2];
-		document.getElementById("tweets").appendChild(li);
-	};
+    }, false);
 
-	updateEmpty(false);
-	updateFeelings(49, 51);
+    xhr.send(parameters)
+}
+
+function fetch_tweet() {
+
 }
 
 function CSVToArray( strData, strDelimiter ) {
