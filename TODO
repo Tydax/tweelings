@@ -1,5 +1,0 @@
-- Récupérer des tweets en ajax via l'interface.
-- Anoter les tweets : à la main via l'interface. Modifier la classe et sauvegarder les modifs. -> tweets de références
-- dictionnaire de mots clés : Mots+ & Mots-
-- Méthode d'apprentissage pour la classification automatique : - Notion distance
-															   - 1ere méthode KNN

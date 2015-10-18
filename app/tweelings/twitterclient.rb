@@ -9,6 +9,8 @@ require 'tweelings/utils'
 
 ##
 # TwitterClient is the class used to interact with the Twitter library.
+#
+# Author:: Armand (Tydax) BOUR
 class TwitterClient
 
     ##
