@@ -3,6 +3,7 @@
 require 'json'
 
 # My libraries
+require 'tweelings/criteria'
 require 'tweelings/core'
 require 'tweelings/utils'
 
@@ -14,18 +15,13 @@ module AjaxView
     CODE_NO_PARAMS = -1
 
     def self.fetch_tweets(params)
-        # TODO: use an object for criteria...
-
         # Check for params
-        if params == nil || param == ""
+        if params == nil || params == ""
             return JSON.parse(["code" => CODE_NO_PARAMS])
         end
 
         params = JSON.parse(params)
-        criteria = {
-            theme: params["theme"],
-            number: params["number"]
-        }
+        criteria = Criteria.new(params["theme"], params["number"])
         result = Core.fetch_tweets(criteria).length
         JSON.parse(["code" => CODE_SUCCESS, "result" => "#{result}"])
     end

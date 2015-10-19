@@ -1,13 +1,13 @@
 function appendSubmitEvent() {
-	console.log("appendSubmitEvent()");
     var form = document.getElementById("search-form");
     //form.action = fetchTweets();
-    form.addEventListener("submit", function(e) {
+    form.onsubmit = function(e) {
         fetchTweets();
-    }, false);
+        return false;
+    };
+    console.log("Appended submit event");
 }
 
-appendSubmitEvent();
-/*(function() {
+(function() {
     appendSubmitEvent();
-});*/
+})();

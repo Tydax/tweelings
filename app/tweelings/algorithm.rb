@@ -72,9 +72,19 @@ module Algorithm
         end
     end
 
-    def self.knn_dist_between_tweets(text1, text2)
+    ##
+    # Computes the distance between two texts by searching for common words.
+    #
+    # @param text1 [String] the first text to use
+    # @param text2 [String] the second text to use
+    # @returns [Float] a number between 0.0 and 1.0 representing the distance
+    ##
+    def self.knn_dist_between(text1, text2)
         text1 = text1.split(' ')
         text2 = text2.split(' ')
-        common = (text1 & text2)
+        common = (text1 & text2).length.to_f
+        total = text1.length + text2.length
+
+        (total - common) / total
     end
 end

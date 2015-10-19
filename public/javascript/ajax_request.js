@@ -25,15 +25,16 @@ function sendRequest(type, path, parameters, callback) {
 
 function fetchTweets() {
     var form = document.getElementById("search-form");
-    console.log("theme : "+form.theme.value);
+    console.log("theme : " + form.theme.value);
     var parameters = {
         "theme": form.theme.value
     }
     lockForm(true);
     sendRequest("POST", "/fetch_tweets", parameters, function(response) {
         var result = JSON.parse(response);
-        updateTweetList(result);
-        lockForm(false);
+        console.log(result);
+        /*updateTweetList(result);
+        lockForm(false);*/
     });
 }
 

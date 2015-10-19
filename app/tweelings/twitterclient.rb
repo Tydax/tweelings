@@ -5,16 +5,20 @@ require 'yaml'
 require 'twitter'
 
 # My libraries
-require 'tweelings/utils'
+require 'tweelings/criteria'
 
 ##
 # TwitterClient is the class used to interact with the Twitter library.
 #
-# Author:: Armand (Tydax) BOUR
+# @author Armand (Tydax) BOUR
+##
 class TwitterClient
 
     ##
-    # Constructor intialising a twitter client with the file at the specified path.
+    # Intialises a twitter client with the YAML file at the specified path.
+    #
+    # @param [String] path the path to the config YAML file.
+    ##
     def initialize(path)
         file = YAML.load_file(path)
         @client = Twitter::REST::Client.new do |config|
@@ -27,10 +31,12 @@ class TwitterClient
 
     ##
     # Fetches all tweets with the specified criteria.
+    #
+    # @param
     def fetch_tweets(criteria)
-        tweets = @client.search(Utils.theme_from_criteria(criteria))
+        tweets = @client.search(criteria.theme)
         
         # Take a certain number of tweets if indicated a limit
-        criteria[:number] ? tweets.take(criteria[:number]) : tweets
+        criteria.number ? tweets.take(criteria.number) : tweets
     end
 end

@@ -10,10 +10,10 @@ get '/' do
     File.read(File.join('public', 'html/index.html'))
 end
 
-post '/fetch_tweets' do
-    AjaxView.fetch_tweets(request.POST.inspect)
+get '/fetch_tweets' do
+    AjaxView.fetch_tweets(request.GET.inspect)
 end
 
-post '/save_tweets' do
+get '/save_tweets' do
     AjaxView.save_tweets    
 end
