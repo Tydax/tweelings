@@ -71,4 +71,10 @@ module Algorithm
             0
         end
     end
+
+    def self.knn_dist_between_tweets(text1, text2)
+        text1 = text1.split(' ')
+        text2 = text2.split(' ')
+        common = (text1 & text2)
+    end
 end
