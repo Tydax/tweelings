@@ -13,7 +13,7 @@ module AjaxView
     CODE_SUCESS = 0
     CODE_NO_PARAMS = -1
 
-    def fetch_tweets(params)
+    def self.fetch_tweets(params)
         # TODO: use an object for criteria...
 
         # Check for params
@@ -30,7 +30,7 @@ module AjaxView
         JSON.parse(["code" => CODE_SUCCESS, "result" => "#{result}"])
     end
     
-    def save_tweets
+    def self.save_tweets
         result = Core.convert_tweets
         JSON.parse(Utils.tweelings_to_a(result))
     end
