@@ -1,9 +1,10 @@
 lib = File.expand_path("../app", __FILE__)
   $:.unshift(lib)
-require 'tweelings/tweeling'
-require 'tweelings/utils'
 
-tweeling = Tweeling.new(0, 12345, "fange", "MadameZahia", "Quelles délices fangeux !!!", "21/10/2015", "fange", -1);
-array = [tweeling, Tweeling.new(1, 1236, "fange", "Ingrid", "ah ben jsen que sa va etr cho ce soar!!", "10/10/2015", "fange", -1)]
+require 'tweelings'
 
-puts Utils.tweelings_to_json(array)
+text = "RT @Ingrid: @MadameZahia  Woo La fange  madame zahia !!   ! j'adore la #fange c'est assez incroyable boué de sauvetage    le caca est ma passion."
+res = Algorithm.clean_tweet(text)
+puts res
+res = Algorithm.annotate_using_keywords(res)
+puts res

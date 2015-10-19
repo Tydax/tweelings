@@ -5,10 +5,10 @@ require 'tweelings/databasecsv'
 require 'tweelings/twitterclient'
 require 'tweelings/utils'
 
-class Core
+module Core
 
-    @@twitter_client = TwitterClient.new('config/app_config.yaml')
-    @@database = DatabaseCSV.new
+    TWITTER_CLIENT = TwitterClient.new('config/app_config.yaml')
+    DATABASE = DatabaseCSV
 
     ##
     # Caches to store pending tweets 
@@ -17,7 +17,7 @@ class Core
     @@cleaned_cache
 
     def self.fetch_tweets(criteria)
-        @@raw_cache = @@twitter_client.fetch_tweets(criteria)
+        @@raw_cache = TWITTER_CLIENT.fetch_tweets(criteria)
         @@raw_cache
     end
 
@@ -26,7 +26,7 @@ class Core
         @@raw_cache.each do |raw_tweet|
             @@converted_cache.push(Tweeling.from_raw(raw_tweet))
         end
-        @@database.save(@@converted_cache, @@database.def_raw_db)
+        DATABASE.save(@@converted_cache, DATABASE.def_raw_db)
         @@converted_cache
     end
 
@@ -37,7 +37,7 @@ class Core
             Algorithm.clean_tweet!(tweeling.text)
             @@cleaned_cache.push(tweeling)
         end
-        @@database.save(@@cleaned_cache, @@database.def_clean_db)
+        DATABASE.save(@@cleaned_cache, DATABASE.def_clean_db)
         @@cleaned_cache
     end
 end

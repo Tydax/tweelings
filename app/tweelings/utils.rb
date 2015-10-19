@@ -7,8 +7,8 @@ require 'twitter'
 ##
 # Utils offers functions used to all kind of utility purpose.
 #
-# Author:: Armand (Tydax) BOUR
-class Utils
+# @author Armand (Tydax) BOUR
+module Utils
     # TODO: delete this useless method...
     def self.theme_from_criteria(criteria)
         theme = "#{criteria[:theme]}"

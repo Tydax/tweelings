@@ -1,32 +1,74 @@
 ##
 # Class defining different algorithms used at the core of the application.
 #
-# Author:: Armand (Tydax) BOUR
-class Algorithm
+# @author Armand (Tydax) BOUR
+module Algorithm
 
     ##
-    # Cleans the specified tweet, removing all the Twitter-specific patterns.
+    # Cleans the specified tweet text, removing all the Twitter-specific patterns.
     # Modifies the specified parameter.
-    def self.clean_tweet!(tweet)
-        tweet.gsub!(/RT @[^ ]* *: */, '') # Delete "RT @name"
-        tweet.gsub!(/(@|http:\/\/)[^ ]*/, '') # Delete the "@name"s
-        tweet.gsub!(/(?=[[:punct:]“”’…])/, ' \1 ') # Space behind and after each punctation symbol
-        tweet.gsub!(/\'/, ' \' ') # Space behind and after each simple quote (I don't know why but I have to do it manually
-        tweet.gsub!(/ {2,}/, ' ') # Delete double spaces
-        tweet.gsub!(/#(?=[^ ]*)/, '\1') # Delete hash from hastags
+    def self.clean_tweet!(text)
+        text.downcase!
+        text.gsub!(/rt @[^ ]* *: */, '') # Delete "RT @name"
+        text.gsub!(/(@|http:\/\/)[^ ]*/, '') # Delete the "@name"s
+        text.gsub!(/(?=[[:punct:]“”’…])/, ' \1 ') # Space behind and after each punctation symbol
+        text.gsub!(/\'/, ' \' ') # Space behind and after each simple quote (I don't know why but I have to do it manually
+        text.gsub!(/ {2,}/, ' ') # Delete double spaces
+        text.gsub!(/#(?=[^ ]*)/, '\1') # Delete hash from hastags
+        text.strip!
     end
 
     ##
-    # Cleans the specified tweet, removing all the Twitter-specific patterns.
+    # Cleans the specified tweet text, removing all the Twitter-specific patterns.
     # Returns the specified parameter.
-    def self.clean_tweet(tweet)
-        tweet = tweet.gsub(/RT @[^ ]* *: */, '') # Delete "RT @name"
-        tweet = tweet.gsub(/(@|http:\/\/)[^ ]*/, '') # Delete the "@name"s
-        tweet = tweet.gsub(/(?=[[:punct:]“”’…])/, ' \1 ') # Space behind and after each punctation symbol
-        tweet = tweet.gsub(/\'/, ' \' ') # Space behind and after each simple quote (I don't know why but I have to do it manually
-        tweet = tweet.gsub(/ {2,}/, ' ') # Delete double spaces
-        tweet = tweet.gsub(/#(?=[^ ]*)/, '\1') # Delete hash from hastags
+    def self.clean_tweet(text)
+        text = text.downcase
+        text = text.gsub(/RT @[^ ]* *: */, '') # Delete "RT @name"
+        text = text.gsub(/(@|http:\/\/)[^ ]*/, '') # Delete the "@name"s
+        text = text.gsub(/(?=[[:punct:]“”’…])/, ' \1 ') # Space behind and after each punctation symbol
+        text = text.gsub(/\'/, ' \' ') # Space behind and after each simple quote (I don't know why but I have to do it manually
+        text = text.gsub(/ {2,}/, ' ') # Delete double spaces
+        text = text.gsub(/#(?=[^ ]*)/, '\1') # Delete hash from hastags
+        text = text.strip
+    end
 
-        return tweet
+    # The positive word lexicon.
+    LEX_POSITIVE = File.read("data/lex_positive.txt").downcase.split(",").map(&:strip)
+    # The negative word lexicon.
+    LEX_NEGATIVE = File.read("data/lex_negative.txt").downcase.split(",").map(&:strip)
+
+    ##
+    # Evaluates the specified tweet text.
+    #
+    # @param [String] text the text to evaluate
+    # @return [Integer] a number representing the annotation
+    #   * 0 = negative
+    #   * 2 = neutral
+    #   * 4 = positive
+    ##
+    def self.annotate_using_keywords(text)
+        res = 0
+
+        LEX_POSITIVE.each do |word|
+            if text.include?(word)
+                puts "#{word}++"
+                res += 1
+            end
+        end
+
+        LEX_NEGATIVE.each do |word|
+            if text.include?(word)
+                puts "#{word}--"
+                res -= 1
+            end
+        end
+
+        if res > 0 # Positive
+            4
+        elsif res == 0 # Neutral
+            2
+        else # Negative
+            0
+        end
     end
 end

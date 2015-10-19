@@ -8,20 +8,29 @@ require 'tweelings/utils'
 
 ##
 # Class used to interact between the core application and the interface.
-class AjaxView
+module AjaxView
 
-    def self.fetch_tweets(params)
+    CODE_SUCESS = 0
+    CODE_NO_PARAMS = -1
+
+    def fetch_tweets(params)
         # TODO: use an object for criteria...
+
+        # Check for params
+        if params == nil || param == ""
+            return JSON.parse(["code" => CODE_NO_PARAMS])
+        end
+
         params = JSON.parse(params)
         criteria = {
             theme: params["theme"],
             number: params["number"]
         }
         result = Core.fetch_tweets(criteria).length
-        JSON.parse(["result" => "#{result}"])
+        JSON.parse(["code" => CODE_SUCCESS, "result" => "#{result}"])
     end
     
-    def self.save_tweets
+    def save_tweets
         result = Core.convert_tweets
         JSON.parse(Utils.tweelings_to_a(result))
     end

@@ -7,8 +7,8 @@ require 'tweelings/utils'
 ##
 # Module used for interactions with the .csv files.
 #
-# Author:: Armand (Tydax) BOUR
-class DatabaseCSV
+# @author Armand (Tydax) BOUR
+module DatabaseCSV
 
     @@def_raw_db = 'data/db_raw.csv'
     @@def_cleaned_db = 'data/db_cleaned'
@@ -17,7 +17,7 @@ class DatabaseCSV
     # Saves the specified tweets into the specified CSV file.
     # tweeling_cache: The tweeling cache hash containing a hash for each tweeling containing all the information
     # database_path: The path to the .csv file where the tweelings must be saved.
-    def save(tweeling_cache, database_path)
+    def self.save(tweeling_cache, database_path)
         # If no index are defined in the tweelings, fetch the last index to generate one (case specific to raw tweet)
         if tweeling_cache.first.id == -1
             base = CSV.read(database_path)
@@ -39,7 +39,7 @@ class DatabaseCSV
     ##
     # Fetches all the tweet from the specified csv file.
     # database_path: The path to the .csv file containing the tweets.
-    def fetch_all(database_path)
+    def self.fetch_all(database_path)
         return fetch_theme(database_path)
     end
 
@@ -47,7 +47,7 @@ class DatabaseCSV
     # Fetches all the tweet from the specified csv file.
     # database_path: The path to the .csv file containing the tweets.
     # theme: 
-    def fetch_theme(database_path, theme = nil)
+    def self.fetch_theme(database_path, theme = nil)
         # Store in a array
         result = []
         CSV.foreach(database_path) do |row|
