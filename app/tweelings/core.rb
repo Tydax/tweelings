@@ -1,9 +1,9 @@
 
 # My libraries
 require 'tweelings/algorithm'
+require 'tweelings/databasecsv'
 require 'tweelings/twitterclient'
 require 'tweelings/utils'
-
 
 class Core
 
@@ -24,7 +24,7 @@ class Core
     def self.convert_tweets
         @@converted_cache = []
         @@raw_cache.each do |raw_tweet|
-            @@.converted_cache.push(Tweeling.from_raw(raw_tweet))
+            @@converted_cache.push(Tweeling.from_raw(raw_tweet))
         end
         @@database.save(@@converted_cache, @@database.def_raw_db)
         @@converted_cache

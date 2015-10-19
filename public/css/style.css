@@ -1,41 +1,41 @@
 body {
-	color: #292f33;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #292f33;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
 }
 
 h1 {
-	font-size: 1em;
-	margin: 0;
-	padding: 0.8em 0.8em;
+    font-size: 1em;
+    margin: 0;
+    padding: 0.8em 0.8em;
 }
 
 #header {
-	background-color: #55acee;
-	border-bottom: 1px solid #e1e8ed;
-	color: white;
+    background-color: #6165b5;
+    border-bottom: 1px solid #e1e8ed;
+    color: white;
     width: 100%;
 }
 
 #page {
-	margin: auto;
-	text-align: center;
-	width: 100%;
+    margin: auto;
+    text-align: center;
+    width: 100%;
 }
 
 .bloc {
-	border: 1px solid #e1e8ed;
-	border-radius: 5px;
-	box-shadow: 0 0 0.2em 0 rgba(255,255,255,0.6);
-	color: #292f33;
-	display: inline-block;
-	margin: 1.5em 0.5em 0 0.5em;
-	vertical-align: top;
+    border: 1px solid #e1e8ed;
+    border-radius: 5px;
+    box-shadow: 0 0 0.2em 0 rgba(255,255,255,0.6);
+    color: #292f33;
+    display: inline-block;
+    margin: 1.5em 0.5em 0 0.5em;
+    vertical-align: top;
 }
 
 .bloc h2 {
-	border-bottom: 1px solid #e1e8ed;
+    border-bottom: 1px solid #e1e8ed;
     box-shadow: 0 1px 0 #fff;
     color: #66757f;
     display: block;
@@ -52,101 +52,105 @@ h1 {
 }
 
 #result {
-	text-align: left;
-	width: 57%;
+    text-align: left;
+    width: 57%;
 }
 
 #empty {
-	font-size: 14px;
-	margin-bottom: 10px;
-	text-align: center;
+    font-size: 14px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 #stats {
-	display: none;
-	font-size : 0;
-	margin-bottom: 12px;
-	padding-right: 10px;
-	padding-left: 10px;
-	text-align: center;
+    display: none;
+    font-size : 0;
+    margin-bottom: 12px;
+    padding-right: 10px;
+    padding-left: 10px;
+    text-align: center;
 }
 
 .stats {
-	display: inline-block;
-	font-size: 14px;
-	line-height: 3em;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 3em;
 }
 
 #smiley {
-	width: 3em;
+    width: 3em;
 }
 
 #smiley img {
-	max-width: 3em;
-	vertical-align: middle;
-	width: 80%;
+    max-width: 3em;
+    vertical-align: middle;
+    width: 80%;
 }
 
 #feelings-bar {
-	color: white;
-	font-size: 14px;
-	text-align: center;
-	width: calc(100% - 3em);
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    width: calc(100% - 3em);
 }
 
 .feelings {
-	display: inline-block;
-	height: 100%;
+    display: inline-block;
+    height: 100%;
 }
 
 #good {
-	background-color: green;
-	border-radius: 5px 0 0 5px;
+    background-color: green;
+    border-radius: 5px 0 0 5px;
 }
 
 #bad {
-	background-color: red;
-	border-radius: 0 5px 5px 0;
+    background-color: red;
+    border-radius: 0 5px 5px 0;
 }
 
-#tweets {
-	color: #292f33;
-	font-size: 14px;
+#tweet-list {
+    color: #292f33;
+    font-size: 14px;
     line-height: 18px;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#tweets li {
-	border-top: 1px solid #e1e8ed;
-	margin: 0;
-	padding: 9px 20px;
+#tweet-list li {
+    border-top: 1px solid #e1e8ed;
+    margin: 0;
+    padding: 9px 20px;
 }
 
 #search-config {
-	width: 37%;
-	height: 100%;
+    width: 37%;
+    height: 100%;
 }
 
 #search-config img {
-	margin: 0;
-	padding: 0;
-	border: 0 solid white;
-	height: 1em;
-	vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    border: 0 solid white;
+    height: 1em;
+    vertical-align: middle;
 }
 
-#search-input {
-	background-color: #f5f8fa;
+#search-form-theme {
+    background-color: #f5f8fa;
     border: 1px solid #e1e8ed;
     border-radius: 20px;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     color: #292f33;
-	display: inline-block;
+    display: inline-block;
     margin: auto;
     margin-bottom: 10px;
     padding: 5px 12px;
     width: 90%;
+}
+
+.invisible {
+    display: none;
 }

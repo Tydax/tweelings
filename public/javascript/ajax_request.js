@@ -3,9 +3,9 @@
  * type: type of request (GET or POST)
  * path: the path where to send the request
  * callback: the function to call when the request is done
- * parameter: the parameters written in a json formatted string
+ * parameters: the parameters written in a json formatted string
  */
-function sendRequest(type, path, callback) {
+function sendRequest(type, path, parameters, callback) {
     // Load file
     var xhr = new XMLHttpRequest();
     xhr.overrideMimetype("application/json");
@@ -19,12 +19,20 @@ function sendRequest(type, path, callback) {
         }
     }, false);
 
-    xhr.send(parameters)
+    xhr.send(parameters);
 }
 
-function fetch_tweet() {
+function fetchTweets() {
     var form = document.getElementById("search-form");
-    
+    var parameters = {
+        "theme": form.theme.value
+    }
+    lockForm(true);
+    sendRequest("POST", "/fetch_tweets", parameters, function(response) {
+        var result = JSON.parse(response);
+        updateTweetList(result);
+        lockForm(false);
+    });
 }
 
 function CSVToArray( strData, strDelimiter ) {
