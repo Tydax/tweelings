@@ -7,8 +7,9 @@
  */
 function sendRequest(type, path, parameters, callback) {
     // Load file
+    console.log(parameters);
     var xhr = new XMLHttpRequest();
-    xhr.overrideMimetype("application/json");
+    //xhr.overrideMimetype("application/json");
     xhr.open(type, path, true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
@@ -24,6 +25,7 @@ function sendRequest(type, path, parameters, callback) {
 
 function fetchTweets() {
     var form = document.getElementById("search-form");
+    console.log("theme : "+form.theme.value);
     var parameters = {
         "theme": form.theme.value
     }

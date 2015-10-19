@@ -21,7 +21,6 @@ function createTweetElement(tweet) {
  */
 function lockForm(locked) {
     var form = document.getElementById("search-form");
-
 }
 
 function updateFeelings(good, bad) {
