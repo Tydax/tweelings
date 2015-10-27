@@ -16,14 +16,14 @@ module AjaxView
 
     def self.fetch_tweets(params)
         # Check for params
-        if params == nil || params == ""
-            return JSON.parse(["code" => CODE_NO_PARAMS])
+        if params == nil || params == "{}"
+            return JSON.generate({:code => CODE_NO_PARAMS})
         end
 
-        params = JSON.parse(params)
         criteria = Criteria.new(params["theme"], params["number"])
-        result = Core.fetch_tweets(criteria).length
-        JSON.parse(["code" => CODE_SUCCESS, "result" => "#{result}"])
+        result = Core.fetch_tweets(criteria).count
+        puts "Response sent"
+        JSON.generate([:code => CODE_SUCCESS, :result => "#{result}"])
     end
     
     def self.save_tweets

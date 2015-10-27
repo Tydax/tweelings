@@ -18,7 +18,6 @@ module Core
 
     def self.fetch_tweets(criteria)
         @@raw_cache = TWITTER_CLIENT.fetch_tweets(criteria)
-        @@raw_cache
     end
 
     def self.convert_tweets
