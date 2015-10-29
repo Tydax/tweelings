@@ -5,6 +5,7 @@
 * Création de namespaces via les modules (rejoint la tâche ci-dessus)
 * Mieux comprendre Ruby en général afin de correctement structurer l’application…
 * Écriture des routes Sinatra (donc réfléchir à la structure du projet) (utilisation de wildcards pour faire des appels automatiques aux fonctions ?)
+* Ajouter des lignes de debug !!
 
 ## Database
 * Implémenter la numérotation de lignes dans les fichiers .csv
