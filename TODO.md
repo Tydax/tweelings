@@ -6,6 +6,7 @@
 * Mieux comprendre Ruby en général afin de correctement structurer l’application…
 * Écriture des routes Sinatra (donc réfléchir à la structure du projet) (utilisation de wildcards pour faire des appels automatiques aux fonctions ?)
 * Ajouter des lignes de debug !!
+* Ajouter un module général encapsulant toute l'application
 
 ## Database
 * Implémenter la numérotation de lignes dans les fichiers .csv
