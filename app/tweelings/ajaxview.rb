@@ -11,7 +11,7 @@ require 'tweelings/utils'
 # Class used to interact between the core application and the interface.
 module AjaxView
 
-    CODE_SUCESS = 0
+    CODE_SUCCESS = 0
     CODE_NO_PARAMS = -1
 
     def self.fetch_tweets(params)
@@ -21,13 +21,15 @@ module AjaxView
         end
 
         criteria = Criteria.new(params["theme"], params["number"])
-        result = Core.fetch_tweets(criteria).count
-        puts "Response sent"
-        JSON.generate([:code => CODE_SUCCESS, :result => "#{result}"])
+        result = Core.fetch_tweets(criteria)
+        puts "[AjaxView] fetch_tweets:: Response sent"
+        JSON.generate(:code => CODE_SUCCESS,
+                      :result => "#{result.count}")
     end
     
     def self.save_tweets
         result = Core.convert_tweets
-        JSON.parse(Utils.tweelings_to_a(result))
+        JSON.generate(:code => CODE_SUCCESS,
+                      :result => "#{Utils.tweelings_to_a(result)}")
     end
 end

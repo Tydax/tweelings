@@ -13,7 +13,7 @@ class Criteria
     # @param [String] theme the words to look for
     # @param [Integer] number the number of tweets to fetch (-1 to fetch all)
     ##
-    def initialize(theme, number = -1)
+    def initialize(theme, number = nil)
         @theme = theme
         @number = number
     end

@@ -9,9 +9,10 @@ function sendRequest(type, path, parameters, callback) {
     // Load file
     console.log(parameters);
     var xhr = new XMLHttpRequest();
-    // xhr.overrideMimetype("application/json");
     xhr.open(type, path, true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    if (parameters != null) {
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    }
 
     // When given a response, call the callback function
     xhr.addEventListener("readystatechange", function() {
@@ -31,10 +32,19 @@ function fetchTweets() {
     }
     lockForm(true);
     sendRequest("POST", "/fetch_tweets", parameters, function(response) {
-        console.log(result);
         var result = JSON.parse(response);
+        console.log(result);
+        console.log("Fetched " + result.result + " tweets!");
+
         /*updateTweetList(result);
         lockForm(false);*/
+    });
+}
+
+function saveTweets() {
+    sendRequest("GET", "/save_tweets", null, function(response) {
+        var result = JSON.parse(response);
+        console.log("Saved " + result.result.length + " tweets!");
     });
 }
 
