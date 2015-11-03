@@ -1,11 +1,11 @@
 module Tweelings
-    module Object
+    module Client
         ##
         # TwitterClient is the class used to interact with the Twitter library.
         #
         # @author Armand (Tydax) BOUR
         ##
-        class TwitterClient
+        class TwitterRESTClient
 
             ##
             # Intialises a twitter client with the YAML file at the specified path.

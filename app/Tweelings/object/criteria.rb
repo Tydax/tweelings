@@ -4,6 +4,7 @@ module Tweelings
         # Class encapsulating the criteria used to fetch tweets.
         #
         # @author Armand (Tydax) BOUR
+        ##
         class Criteria
             attr_accessor :theme,
                           :number
