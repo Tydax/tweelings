@@ -4,7 +4,7 @@ lib = File.expand_path("../app", __FILE__)
 require 'sinatra'
 
 # My libraries
-require 'tweelings/ajaxview'
+require 'tweelings'
 
 get '/' do
     File.read(File.join('public', 'html/index.html'))
@@ -15,7 +15,7 @@ post '/fetch_tweets' do
     # puts "Request body: #{request.body.read}"
     if request.post?
         parsedParams = JSON.parse(request.body.read)
-        AjaxView.fetch_tweets(parsedParams)
+        Tweelings::View::AjaxView.fetch_tweets(parsedParams)
     else
         "Hey, what did you, 'spect?"
         # TODO: redirect to an error page
@@ -24,6 +24,6 @@ end
 
 get '/save_tweets' do
     if request.xhr?
-        AjaxView.save_tweets    
+        Tweelings::View::AjaxView.save_tweets    
     end
 end

@@ -1,7 +1,10 @@
-require 'tweelings/ajaxview'
-require 'tweelings/algorithm'
-require 'tweelings/core'
-require 'tweelings/databasecsv'
-require 'tweelings/tweeling'
-require 'tweelings/twitterclient'
-require 'tweelings/utils'
+$LOAD_PATH << File.dirname(__FILE__)
+
+module Tweelings
+    require 'csv'
+    require 'json'
+    require 'twitter'
+    require 'yaml'
+
+    require 'Tweelings/boot/loader'
+end
