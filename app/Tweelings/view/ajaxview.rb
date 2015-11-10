@@ -16,8 +16,8 @@ module Tweelings
                 	return JSON.generate({:code => CODE_NO_PARAMS})
             	end
 
-            	criteria = Criteria.new(params["theme"], params["number"])
-            	result = Core.fetch_tweets(criteria)
+            	criteria = Tweelings::Object::Criteria.new(params["theme"], params["number"])
+            	result = Tweelings::TweelingsCore::Core.fetch_tweets(criteria)
             	puts "[AjaxView] fetch_tweets:: Response sent"
             	JSON.generate(:code => CODE_SUCCESS,
               	            :result => "#{result.count}")
