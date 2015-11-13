@@ -7,7 +7,7 @@ module Tweelings
     ##
     module AjaxView
 
-      CODE_SUCESS = 0
+      CODE_SUCCESS = 0
       CODE_NO_PARAMS = -1
 
       def self.fetch_tweets(params)
