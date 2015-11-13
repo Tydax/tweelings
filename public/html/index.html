@@ -32,11 +32,21 @@
                 Search / Config
             </h2>
             <form name="search-tweets" id="search-form" action="POST">
-                <input id="search-form-theme" name="theme" type="text" placeholder="Rechercher sur Twitter"><br>
-                <label for="lexique">Lexique</label>
-                <input type="radio" name="algo" id="lexique" value="lexique" checked>
-                <label for="knn">KNN</label>
-                <input type="radio" name="algo" id="knn" value="knn">
+                <div id="search-bar">
+                    <input id="search-form-theme" name="theme" type="text" placeholder="Rechercher sur Twitter">
+                </div>
+                <div id="algo">
+                    Algorithm : 
+                    <label for="lexique">Lexique</label>
+                    <input type="radio" name="algo" id="lexique" value="lexique" checked>
+                    <label for="knn">KNN</label>
+                    <input type="radio" name="algo" id="knn" value="knn">
+                </div>
+                <div id="proxy">
+                    Proxy : 
+                    <input id="proxy" name="proxy-host" type="text" placeholder="Host">
+                    <input id="proxy" name="proxy-port" type="text" placeholder="Port">
+                </div>
             </form>
         </div>
     </div>

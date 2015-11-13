@@ -128,7 +128,11 @@ h1 {
     width: 37%;
     height: 100%;
     font-size: 13px;
-    padding-bottom: 10px;
+}
+
+#search-config div {
+    padding: 0 5% 10px 5%;
+    text-align: left;
 }
 
 #search-config img {
@@ -148,9 +152,8 @@ h1 {
     color: #292f33;
     display: inline-block;
     margin: auto;
-    margin-bottom: 10px;
     padding: 5px 12px;
-    width: 90%;
+    width: 100%;
 }
 
 .invisible {
