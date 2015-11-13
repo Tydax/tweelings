@@ -7,7 +7,7 @@ module Tweelings
     ##
     module AjaxView
 
-      CODE_SUCESS = 0
+      CODE_SUCCESS = 0
       CODE_NO_PARAMS = -1
 
       def self.fetch_tweets(params)
@@ -20,13 +20,21 @@ module Tweelings
         result = Tweelings::TweelingsCore::Core.fetch_tweets(criteria)
         puts "[AjaxView] fetch_tweets:: Response sent"
         JSON.generate(:code => CODE_SUCCESS,
-                      :result => "#{result.count}")
+                      :result => "1337")
       end
     
       def self.save_tweets
-        result = Core.convert_tweets
+        result = Tweelings::TweelingsCore::Core.convert_tweets
+        puts "[AjaxView] save_tweets:: Response sent"
         JSON.generate(:code => CODE_SUCCESS,
                       :result => "#{Utils.tweelings_to_a(result)}")
+      end
+
+      def self.clean_tweets
+        result = Tweelings::TweelingsCore::Core.clean_tweets
+        puts "[AjaxView] clean_tweets:: Response sent"
+        JSON.generate(:code => CODE_SUCCESS,
+                      :result => "#{result.length}")
       end
     end
   end

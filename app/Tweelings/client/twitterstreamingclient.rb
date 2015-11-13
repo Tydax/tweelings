@@ -1,13 +1,13 @@
 module Tweelings
   module Client
     ##
-    # TwitterRESTClient is the class used to interact with the Twitter library
-    # using the REST API.
+    # TwitterStreamingClient is the class used to interact with the Twitter library
+    # using the Streaming API.
     #
     # @author Armand (Tydax) BOUR
     ##
-    class TwitterRESTClient
-
+    class TwitterStreamingClient
+      
       ##
       # Intialises a twitter client with the YAML file at the specified path.
       #
@@ -15,7 +15,7 @@ module Tweelings
       ##
       def initialize(path)
         file = YAML.load_file(path)
-        @client = Twitter::REST::Client.new do |config|
+        @client = Twitter::Streaming::Client.new do |config|
             config.consumer_key         = file[:consumer_key]
             config.consumer_secret      = file[:consumer_secret]
             config.access_token         = file[:access_token]
@@ -28,15 +28,9 @@ module Tweelings
       #
       # @param
       def fetch_tweets(criteria)
-        tweets = @client.search(criteria.theme)
-        res = []
-
-        # Take a certain number of tweets if indicated a limit
-        (criteria.number ? tweets.take(criteria.number) : tweets).collect do |tweet|
-          res.push(tweet)
+        @client.filter(track: criteria.theme) do |object|
+          puts object.text if object.is_a?(Twitter::Tweet)
         end
-
-        res
       end
     end
   end

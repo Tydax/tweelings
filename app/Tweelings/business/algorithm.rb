@@ -90,6 +90,32 @@ module Tweelings
 
         (total - common) / total
       end
+
+      ##
+      # Evaluates the specified tweet using the base.
+      #
+      # @param text [String] the text of the tweet to evaluate
+      # @param base [Array<String>] the base of text of tweets to use
+      # @param neighbours [Integer] the number of neighbours to consider
+      # @return [Integer] a number representing the annotation
+      #   * 0 = negative
+      #   * 2 = neutral
+      #   * 4 = positive
+      ##
+      def self.knn(text, base, neighbours)
+        # close_neighbours = base.take(neighbours)
+
+        # base.last(base.length - neighbours).each do |i|
+        #   dist_i = knn_dist_between(i, text)
+        #   close_neighbours.each do |neighb|
+        #     if dist_i < knn_dist_between(neighb, text)
+                
+        #         close_neighbours.each do |delete|
+
+        #       break
+
+        # end
+      end
     end
   end
 end

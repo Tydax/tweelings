@@ -4,6 +4,7 @@ module Tweelings
 
   # Client
   require 'Tweelings/client/twitterrestclient'
+  require 'Tweelings/client/twitterstreamingclient'
 
   # Database
   require 'Tweelings/database/databasecsv'

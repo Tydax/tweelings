@@ -35,9 +35,7 @@ function fetchTweets() {
         var result = JSON.parse(response);
         console.log(result);
         console.log("Fetched " + result.result + " tweets!");
-
-        /*updateTweetList(result);
-        lockForm(false);*/
+        saveTweets();
     });
 }
 
@@ -45,6 +43,7 @@ function saveTweets() {
     sendRequest("GET", "/save_tweets", null, function(response) {
         var result = JSON.parse(response);
         console.log("Saved " + result.result.length + " tweets!");
+        console.log(result.result);
     });
 }
 
