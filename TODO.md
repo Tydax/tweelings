@@ -12,6 +12,7 @@
 * Implémenter la numérotation de lignes dans les fichiers .csv
 * Implémenter la suppression de ligne(s) dans les fichiers .csv
 * Implémenter le repérage de doublons
+* Utiliser SQLite pour se simplifier GRANDEMENT la vie
 
 ## Algorithmes
 * Implémentation d’un algorithme naïf en utilisant un dictionnaire de mots clés : Mots+ & Mots-

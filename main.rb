@@ -14,27 +14,23 @@ configure :development do
 end
 
 get '/' do
-    File.read(File.join('public', 'html/index.html'))
-end
-
-get "/better_errors" do
-  raise "oops"
+  File.read(File.join('public', 'html/index.html'))
 end
 
 post '/fetch_tweets' do
-    content_type :json
-    # puts "Request body: #{request.body.read}"
-    if request.post?
-        parsedParams = JSON.parse(request.body.read)
-        Tweelings::View::AjaxView.fetch_tweets(parsedParams)
-    else
-        "Hey, what did you, 'spect?"
-        # TODO: redirect to an error page
-    end
+  content_type :json
+  # puts "Request body: #{request.body.read}"
+  if request.post?
+      parsedParams = JSON.parse(request.body.read)
+      Tweelings::View::AjaxView.fetch_tweets(parsedParams)
+  else
+      "Hey, what did you, 'spect?"
+      # TODO: redirect to an error page
+  end
 end
 
 get '/save_tweets' do
-    if request.xhr?
-        Tweelings::View::AjaxView.save_tweets    
-    end
+  if request.xhr?
+      Tweelings::View::AjaxView.save_tweets    
+  end
 end
