@@ -25,14 +25,9 @@ module Tweelings
       # Cleans the specified tweet text, removing all the Twitter-specific patterns.
       # Returns the specified parameter.
       def self.clean_tweet(text)
-        text = text.downcase
-        text = text.gsub(/RT @[^ ]* *: */, '') # Delete "RT @name"
-        text = text.gsub(/(@|http:\/\/)[^ ]*/, '') # Delete the "@name"s
-        text = text.gsub(/(?=[[:punct:]“”’…])/, ' \1 ') # Space behind and after each punctation symbol
-        text = text.gsub(/\'/, ' \' ') # Space behind and after each simple quote (I don't know why but I have to do it manually
-        text = text.gsub(/ {2,}/, ' ') # Delete double spaces
-        text = text.gsub(/#(?=[^ ]*)/, '\1') # Delete hash from hastags
-        text = text.strip
+        buffer = String.new(text)
+        clean_tweet!(buffer)
+        buffer
       end
 
       # The positive word lexicon.

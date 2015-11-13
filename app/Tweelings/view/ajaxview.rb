@@ -20,7 +20,7 @@ module Tweelings
         result = Tweelings::TweelingsCore::Core.fetch_tweets(criteria)
         puts "[AjaxView] fetch_tweets:: Response sent"
         JSON.generate(:code => CODE_SUCCESS,
-                      :result => "1337")
+                      :result => "#{result.length}")
       end
     
       def self.save_tweets
