@@ -33,8 +33,10 @@
             </h2>
             <form name="search-tweets" id="search-form" action="POST">
                 <input id="search-form-theme" name="theme" type="text" placeholder="Rechercher sur Twitter"><br>
-                <input type="radio" name="algo" value="lexique" checked>Lexique
-                <input type="radio" name="algo" value="knn">KNN
+                <label for="lexique">Lexique</label>
+                <input type="radio" name="algo" id="lexique" value="lexique" checked>
+                <label for="knn">KNN</label>
+                <input type="radio" name="algo" id="knn" value="knn">
             </form>
         </div>
     </div>
