@@ -103,18 +103,38 @@ module Tweelings
       #   * 4 = positive
       ##
       def self.knn(text, base, neighbours)
-        # close_neighbours = base.take(neighbours)
+        # Take x neighbours
+        close_neighbours = base.take(neighbours)
 
-        # base.last(base.length - neighbours).each do |i|
-        #   dist_i = knn_dist_between(i, text)
-        #   close_neighbours.each do |neighb|
-        #     if dist_i < knn_dist_between(neighb, text)
-                
-        #         close_neighbours.each do |delete|
+        # Browse through all neighbours
+        base.last(base.length - neighbours).each do |i|
+          dist_i = knn_dist_between(i, text)
+          # Check if the distance is lower than one of the tweets in the close_neighbours
+          close_neighbours.each do |neighb|
+            if dist_i < knn_dist_between(neighb, text)
+              # Delete the furthest away tweet from close neighbours
+              
+              # Look for the furthest away tweet
+              furthest_tweet = nil
+              furthest_dist = -1
 
-        #       break
+              close_neighbours.each do |x|
+                dist = knn_dist_between(text, x)
+                if furthest_dist < dist
+                  furthest_dist = dist
+                  furthest_tweet = x
+                end
+              end
 
-        # end
+              close_neighbours.delete(furthest_tweet)
+              close_neighbours.push(i)
+              break
+            end
+          end
+        end
+
+        # TODO vote_voisins ???
+        close_neighbours
       end
     end
   end
