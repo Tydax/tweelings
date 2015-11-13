@@ -1,7 +1,8 @@
 module Tweelings
   module TweelingsCore
     module Core
-      TWITTER_CLIENT = Tweelings::Client::TwitterStreamingClient.new('config/app_config_ebooks.yaml')
+
+      TWITTER_CLIENT = Tweelings::Client::TwitterRESTClient.new('config/app_config_kaendan.yaml')
       DATABASE = Tweelings::Database::DatabaseCSV
 
       ##
