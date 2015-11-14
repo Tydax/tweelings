@@ -35,11 +35,11 @@ module Tweelings
       def self.from_raw(tweet, criteria)
         Tweeling.new(-1,
                     tweet.id,
-                    Utils.theme_from_criteria(criteria),
+                    criteria.theme,
                     tweet.user.screen_name,
                     tweet.text,
                     tweet.created_at,
-                    criteria,
+                    criteria.to_req,
                     -1)
       end
 

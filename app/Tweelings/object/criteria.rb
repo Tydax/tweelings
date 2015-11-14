@@ -19,6 +19,10 @@ module Tweelings
         @theme = theme
         @number = number
       end
+
+      def to_req
+        "#{@theme}"
+      end
     end
   end
 end

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 gem 'better_errors', '~> 2.1.1'
 gem 'json',          '~> 1.8.3'
+gem 'pry',           '~> 0.10.3'
 gem 'sinatra',       '~> 1.4.6'
 gem 'twitter',       '~> 5.15'

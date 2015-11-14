@@ -28,7 +28,7 @@ module Tweelings
       #
       # @param
       def fetch_tweets(criteria)
-        tweets = @client.search(criteria.theme)
+        tweets = @client.search(criteria.to_req)
         res = []
 
         # Take a certain number of tweets if indicated a limit

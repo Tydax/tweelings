@@ -21,16 +21,19 @@ post '/fetch_tweets' do
   content_type :json
   # puts "Request body: #{request.body.read}"
   if request.post?
-      parsedParams = JSON.parse(request.body.read)
-      Tweelings::View::AjaxView.fetch_tweets(parsedParams)
+    parsedParams = JSON.parse(request.body.read)
+    Tweelings::View::AjaxView.fetch_tweets(parsedParams)
   else
-      "Hey, what did you, 'spect?"
-      # TODO: redirect to an error page
+    "Hey, what did you, 'spect?"
+    # TODO: redirect to an error page
   end
 end
 
 get '/save_tweets' do
-  if request.xhr?
-      Tweelings::View::AjaxView.save_tweets    
+  if request.get?
+    Tweelings::View::AjaxView.save_tweets  
+  else
+    "Hey, what did you, 'spect"
+    # TODO: redirect to an error page
   end
 end
