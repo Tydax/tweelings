@@ -7,7 +7,6 @@
  */
 function sendRequest(type, path, parameters, callback) {
     // Load file
-    console.log(parameters);
     var xhr = new XMLHttpRequest();
     xhr.open(type, path, true);
     if (parameters != null) {
@@ -26,24 +25,29 @@ function sendRequest(type, path, parameters, callback) {
 
 function fetchTweets() {
     var form = document.getElementById("search-form");
-    console.log("theme : " + form.theme.value);
     var parameters = {
         theme: form.theme.value
     }
     lockForm(true);
     sendRequest("POST", "/fetch_tweets", parameters, function(response) {
         var result = JSON.parse(response);
-        console.log(result);
-        console.log("Fetched " + result.result + " tweets!");
-        saveTweets();
+        if (result.code == 0) {
+            console.log("Fetched " + result.result + " tweets!");
+            saveTweets();
+        } else {
+            console.log("Error code: " + result.code);
+            displayError(result.code, result.result);
+        }
     });
 }
 
 function saveTweets() {
     sendRequest("GET", "/save_tweets", null, function(response) {
         var result = JSON.parse(response);
-        console.log("Saved " + result.result.length + " tweets!");
-        console.log(result.result);
+        if (result.code == 0) {
+            console.log("Saved " + result.result.length + " tweets!");
+            lockForm(false);
+        }
     });
 }
 

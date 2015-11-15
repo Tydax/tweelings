@@ -11,11 +11,16 @@
         <h1>Tweelings - Tweets & Feelings</h1>
     </div>
     <div id="page">
+        <div id="error" class="bloc invisible">
+            <p>No error.</p>
+        </div>
+
         <div id="result" class="bloc">
             <h2>Results</h2>
             <div id="empty">
                 No results.
             </div>
+
             <div id="stats">
                 <!-- <div class="stats" id="smiley">
                     <img src='resources/loupe.png'>
@@ -24,8 +29,10 @@
                     <div class="feelings" id="good">1</div><div class="feelings" id="bad">1</div>
                 </div> -->
             </div>
-            <ul id="tweet-list"></ul>
+            <ul id="tweet-list">
+            </ul>
         </div>
+
         <div id="search-config" class="bloc">
             <h2>
                 <img src="resources/loupe.png">

@@ -2,7 +2,7 @@ module Tweelings
   module TweelingsCore
     module Core
 
-      TWITTER_CLIENT = Tweelings::Client::TwitterRESTClient.new('config/app_config.yaml')
+      TWITTER_CLIENT = Tweelings::Client::TwitterRESTClient.new('config/app_config_tydax.yaml')
       DATABASE = Tweelings::Database::DatabaseCSV
 
       ##

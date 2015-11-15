@@ -25,6 +25,24 @@ function lockForm(locked) {
     theme.disabled = locked;
 }
 
+/*
+ * Displays the error block with the specified message.
+ *
+ * message: the message to display.
+ */
+function displayError(code, message) {
+    var errorNode = document.getElementById("error");
+    var pNode = errorNode.getElementsByTagName("p")[0];
+    pNode.removeChild(pNode.childNodes[0]);
+    var textNode = document.createTextNode(message);
+    pNode.appendChild(textNode);
+    errorNode.className = "bloc";
+}
+
+function hideError() {
+    errorNode.className += " invisible";
+}
+
 function updateFeelings(good, bad) {
     var feelingsBar = document.getElementById("feelings-bar");
     var goodBar = document.getElementById("good");

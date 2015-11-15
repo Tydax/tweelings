@@ -26,17 +26,17 @@ module Tweelings
       ##
       # Fetches all tweets with the specified criteria.
       #
-      # @param
+      # @param [Criteria] criteria the criteria used to searched for tweets.
+      ##
       def fetch_tweets(criteria)
-        tweets = @client.search(criteria.to_req)
-        res = []
-
-        # Take a certain number of tweets if indicated a limit
-        (criteria.number ? tweets.take(criteria.number) : tweets).collect do |tweet|
-          res.push(tweet)
+        begin
+          tweets = @client.search(criteria.to_req)
+        rescue Twitter::Error::TooManyRequests => error
+          raise error
         end
 
-        res
+        # Take a certain number of tweets if indicated a limit
+        criteria.number ? tweets.take(criteria.number).to_a : tweets.to_a
       end
     end
   end

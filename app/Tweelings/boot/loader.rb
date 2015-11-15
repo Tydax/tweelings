@@ -15,6 +15,7 @@ module Tweelings
 
   # Utils
   require 'Tweelings/utils/utils'
+  require 'Tweelings/utils/enmessagegenerator'
 
   # View
   require 'Tweelings/view/ajaxview'

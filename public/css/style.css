@@ -41,7 +41,7 @@ h1 {
     display: block;
     font-size: 16px;
     font-weight: 300;
-    margin: 0 0 12px 0;
+    margin-top: 12px;
     height: 1em;
     overflow: auto;
     padding: 10px 12px;
@@ -49,6 +49,15 @@ h1 {
     text-align: center;
     text-shadow: 0 1px 0 rgba(255,255,255,0.6);
     white-space: nowrap;
+}
+
+#error {
+    border: 1px solid #a53337;
+    background-color: #ffb5b7;
+    color: #a53337;
+    margin-top: 12px;
+    padding: 0.05em 6px;
+    width: 57%;
 }
 
 #result {
