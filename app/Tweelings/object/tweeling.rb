@@ -29,7 +29,16 @@ module Tweelings
       ##
       # Converts the tweeling to a simple array. Used for CSV convertion.
       def to_simple_a
-        [@id, @id,@theme, @author, @text, @date, @criteria, @notation]        
+        [
+          @id,
+          @id_twitter,
+          @theme,
+          @author,
+          @text,
+          @date,
+          @criteria,
+          @notation
+        ]        
       end
 
       def self.from_raw(tweet, criteria)
@@ -45,14 +54,14 @@ module Tweelings
 
       def to_a
         [
-            "id"         => @id,
-            "id_twitter" => @id_twitter,
-            "theme"      => @theme,
-            "author"     => @author,
-            "text"       => @text,
-            "date"       => @date,
-            "criteria"   => @criteria,
-            "notation"   => @notation
+          "id"         => @id,
+          "id_twitter" => @id_twitter,
+          "theme"      => @theme,
+          "author"     => @author,
+          "text"       => @text,
+          "date"       => @date,
+          "criteria"   => @criteria,
+          "notation"   => @notation
         ]
       end
     end
