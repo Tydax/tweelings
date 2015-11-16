@@ -1,0 +1,9 @@
+:consumer_key:           'XXXXXXXXXXXXXXXXXXX'
+:consumer_secret:        'XXXXXXXXXXXXXXXXXXX'
+:access_token:           'XXXXXXXXXXXXXXXXXXX'
+:access_token_secret:    'XXXXXXXXXXXXXXXXXXX'
+:proxy:
+    :host:      '127.0.0.1'
+    :port:      1337
+    :username:  'mollis'
+    :password:  'someseriouspassword'
