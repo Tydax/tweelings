@@ -45,28 +45,13 @@ module Tweelings
       #   * 4 = positive
       ##
       def self.annotate_using_keywords(text)
-        res = 0
+        splitted_text = text.split(' ')
+        avg = (splitted_text - LEX_NEGATIVE).length - (splitted_text - LEX_POSITIVE).length
 
-        LEX_POSITIVE.each do |word|
-          if text.include?(word)
-            puts "#{word}++"
-            res += 1
-          end
-        end
-
-        LEX_NEGATIVE.each do |word|
-          if text.include?(word)
-            puts "#{word}--"
-            res -= 1
-          end
-        end
-
-        if res > 0 # Positive
-          4
-        elsif res == 0 # Neutral
-          2
-        else # Negative
-          0
+        case 
+        when avg >  0 then 4
+        when avg == 0 then 2
+        else               0
         end
       end
 
@@ -90,46 +75,44 @@ module Tweelings
       # Evaluates the specified tweet using the base.
       #
       # @param text [String] the text of the tweet to evaluate
-      # @param base [Array<String>] the base of text of tweets to use
+      # @param base [Array<Tweeling::Object::Tweeling>] the base of text of tweets to use
       # @param neighbours [Integer] the number of neighbours to consider
       # @return [Integer] a number representing the annotation
       #   * 0 = negative
       #   * 2 = neutral
       #   * 4 = positive
       ##
-      def self.knn(text, base, neighbours)
+      def self.annotate_using_knn(text, base, neighbours)
         # Take x neighbours
         close_neighbours = base.take(neighbours)
 
         # Browse through all neighbours
         base.last(base.length - neighbours).each do |i|
-          dist_i = knn_dist_between(i, text)
+          dist_i = knn_dist_between(i.text, text)
           # Check if the distance is lower than one of the tweets in the close_neighbours
-          close_neighbours.each do |neighb|
-            if dist_i < knn_dist_between(neighb, text)
-              # Delete the furthest away tweet from close neighbours
-              
-              # Look for the furthest away tweet
-              furthest_tweet = nil
-              furthest_dist = -1
+          if close_neighbours.find { |n| dist_i < knn_dist_between(n.text, text) }
+            # Delete the furthest away tweet from close neighbours
+            
+            # Look for the furthest away tweet
+            furthest_tweet = nil
+            furthest_dist = -1
 
-              close_neighbours.each do |x|
-                dist = knn_dist_between(text, x)
-                if furthest_dist < dist
-                  furthest_dist = dist
-                  furthest_tweet = x
-                end
+            close_neighbours.each do |x|
+              dist = knn_dist_between(text, x.text)
+              if furthest_dist < dist
+                furthest_dist = dist
+                furthest_tweet = x
               end
-
-              close_neighbours.delete(furthest_tweet)
-              close_neighbours.push(i)
-              break
             end
+
+            # Replace the furthest away tweet with the new one
+            close_neighbours.delete(furthest_tweet)
+            close_neighbours.push(i)
           end
         end
 
-        # TODO vote_voisins ???
-        close_neighbours
+        # Get the most occurring notation in the close neighbours 
+        close_neighbours.each { |e|  e.notation }.group_by(&:itself).values.max_by(&:size).first
       end
     end
   end
