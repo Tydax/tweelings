@@ -1,12 +1,12 @@
 module Tweelings
   module Client
     ##
-    # TwitterStreamingClient is the class used to interact with the Twitter library
+    # TwitterStreaming is the class used to interact with the Twitter library
     # using the Streaming API.
     #
     # @author Armand (Tydax) BOUR
     ##
-    class TwitterStreamingClient
+    class TwitterStreaming
       
       ##
       # Intialises a twitter client with the YAML file at the specified path.

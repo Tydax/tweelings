@@ -3,8 +3,9 @@ module Tweelings
   require 'Tweelings/business/algorithm'
 
   # Client
-  require 'Tweelings/client/twitterrestclient'
-  require 'Tweelings/client/twitterstreamingclient'
+  require 'Tweelings/client/twitterrest'
+  require 'Tweelings/client/twitterstreaming'
+  require 'Tweelings/client/dummytwitter'
 
   # Database
   require 'Tweelings/database/databasecsv'

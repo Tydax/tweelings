@@ -1,17 +1,17 @@
 module Tweelings
   module Client
     ##
-    # TwitterRESTClient is the class used to interact with the Twitter library
+    # TwitterREST is the class used to interact with the Twitter library
     # using the REST API.
     #
     # @author Armand (Tydax) BOUR
     ##
-    class TwitterRESTClient
+    class TwitterREST
 
       ##
       # Initialises a new Twitter REST client with the YAML file at the specified path.
       #
-      # @param [String] path the path to the config YAML file.
+      # @param [String] path the path to the config YAML file
       # @raise [Errno::ENOENT] if the file does not exist
       # @raise [ArgumentError] if the file contains incomplete configuration
       ##
@@ -50,8 +50,9 @@ module Tweelings
       ##
       # Fetches all tweets with the specified criteria.
       #
-      # @param [Criteria] criteria the criteria used to searched for tweets.
+      # @param [Criteria] criteria the criteria used to searched for tweets
       # @returns [Array<>] the list of tweets fetched
+      # @raises [Twitter::Error::TooManyRequests] if the maximum number of requests is reached
       ##
       def fetch_tweets(criteria)
         begin
@@ -62,6 +63,22 @@ module Tweelings
 
         # Take a certain number of tweets if indicated a limit
         criteria.number ? tweets.take(criteria.number).to_a : tweets.to_a
+      end
+
+      ##
+      # Fetches all tweets with the specified criteria and write them to the file at the
+      # specified path.
+      #
+      # @param [Criteria] criteria the criteria used to searched for tweets
+      # @param [String] path the path to the file
+      # @raises [Twitter::Error::TooManyRequests] if the maximum number of requests is reached
+      ##
+      def write_tweets_to_file(criteria, path)
+        res = fetch_tweets(criteria)
+
+        file = File.open(path, "w")
+        YAML.dump(res, file)
+        file.close
       end
     end
   end

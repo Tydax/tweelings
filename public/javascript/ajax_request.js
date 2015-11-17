@@ -47,6 +47,8 @@ function saveTweets() {
         if (result.code == 0) {
             console.log("Saved " + result.result.length + " tweets!");
             lockForm(false);
+            console.log(result);
+            updateTweetList(result.result);
         }
     });
 }

@@ -2,7 +2,7 @@ module Tweelings
   module TweelingsCore
     module Core
 
-      TWITTER_CLIENT = Tweelings::Client::TwitterRESTClient.new('config/app_config_tydax.yaml')
+      TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
       DATABASE = Tweelings::Database::DatabaseCSV
 
       ##
@@ -18,6 +18,7 @@ module Tweelings
       end
 
       def self.convert_tweets
+        binding.pry
         @@converted_cache = []
         @@raw_cache.each do |raw_tweet|
           @@converted_cache.push(Tweelings::Object::Tweeling.from_raw(raw_tweet, @@criteria_cache))
