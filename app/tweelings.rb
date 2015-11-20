@@ -3,7 +3,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 module Tweelings
   require 'csv'
   require 'json'
-  require 'pry'
+  require 'sqlite3'
   require 'twitter'
   require 'yaml'
 

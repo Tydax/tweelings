@@ -1,8 +1,11 @@
 lib = File.expand_path("../app", __FILE__)
   $:.unshift(lib)
 # Downloaded libraries
+# For debugging
 require 'better_errors'
 require 'binding_of_caller'
+require 'pry'
+
 require 'sinatra'
 
 # My libraries
