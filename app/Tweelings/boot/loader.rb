@@ -23,4 +23,4 @@ module Tweelings
 
   # Core
   require 'Tweelings/tweelings_core/tweelings_core'
-end    
+end
