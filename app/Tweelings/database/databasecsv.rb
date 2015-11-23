@@ -34,7 +34,7 @@ module Tweelings
 
         CSV.open(database_path, 'ab') do |csv|
           tweeling_cache.each do |tweeling|
-              csv << tweeling.to_simple_a
+              csv << tweeling.to_a
           end
         end
       end
