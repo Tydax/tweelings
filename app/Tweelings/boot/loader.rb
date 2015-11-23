@@ -9,8 +9,7 @@ module Tweelings
 
   # Database
   require 'Tweelings/database/databasecsv'
-  require 'Tweelings/database/databasesqlite'
-  require 'Tweelings/database/dbrawtweets'
+  require 'Tweelings/database/databasesqlitecrud'
 
   # Object
   require 'Tweelings/object/criteria'
