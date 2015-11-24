@@ -46,8 +46,10 @@ module Tweelings
         REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id};"
 
         f = []
-        fields.each { |key, value| f << "#{key.to_s} #{value}"}
+        fields.each { |key, value| f << "#{key.to_s} #{value}" + (key.to_s == id ? " PRIMARY KEY" : "") }
         req = "CREATE TABLE IF NOT EXISTS #{tablename} (%s);" % f.join(", ")
+
+        binding.pry
 
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
