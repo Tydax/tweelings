@@ -72,12 +72,12 @@ function updateVisible(invisible) {
     var emptyNode = document.getElementById("empty");
     var statsNode = document.getElementById("stats");
     if (invisible) {
-        emptyNode.className += " invisible";
-        statsNode.className += " invisible";
+        emptyNode.className = "invisible";
+        statsNode.className = "";
     }
     else {
-        emptyNode.className.replace(" invisible", "");
-        statsNode.className.replace(" invisible", "");
+        emptyNode.className = "";
+        statsNode.className = "invisible";
     }
 }
 
@@ -86,6 +86,8 @@ function updateVisible(invisible) {
  * tweets: the list of all tweets to display
  */
 function updateTweetList(tweets) {
+    updateVisible(true);
+    updateFeelings(50, 50);
     var tweetListNode = document.getElementById("tweet-list");
 
     for (var i = 0; i < tweets.length; i++) {
