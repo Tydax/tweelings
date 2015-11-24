@@ -42,7 +42,7 @@ module Tweelings
         
         # Creating a "id = :id" formated string
         f = []
-        @fields.zip(Array.new(@fields.count, ' = '), keys) { |e| f.push(e.join) }
+        @fields.zip(Array.new(@fields.size, ' = '), keys) { |e| f.push(e.join) }
         REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id};"
 
         f = []
@@ -124,7 +124,7 @@ module Tweelings
       # @returns [true, false] whether the request succeeded or not
       ##
       def delete(*indexes)
-        req = REQUESTS[:delete] % Array.new(indexes.count, '?').join(', ')
+        req = REQUESTS[:delete] % Array.new(indexes.size, '?').join(', ')
         
         begin
           db = SQLite3::Database.new(DB_PATH)

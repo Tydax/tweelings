@@ -1,29 +1,29 @@
 module Tweelings
   module Database
     ##
-    # Example class
-    class DBRawTweets
-      FIELDS = [
-        'tweet_id',
-        'id_twitter',
-        'theme',
-        'author',
-        'text',
-        'date',
-        'criteria',
-        'notation'
-      ]
+    # Class used to interact with the raw_tweet table.
+    #
+    # @author: Armand (Tydax) BOUR
+    ##
+    class DBRawTweets < DatabaseSQLiteCRUD
 
-      TABLE = 'raw_tweets'
+      TABLE  = "raw_tweet"
+      ID     = "tweet_id"
+      FIELDS = {
+        id: "INTEGER",
+        id_twitter: "INTEGER",
+        theme: "VARCHAR(100)",
+        author: "VARCHAR(50)",
+        text: "VARCHAR(170)",
+        date: "TEXT",
+        criteria: "VARCHAR(150)",
+        notation: "INTEGER"
+      }
 
-      ID = 'tweet_id'
+      def initialize
+        super(
 
-      include Tweelings::Database::DatabaseSQLite
-
-      def from_row
-      end
-
-      def to_row
+          )
       end
     end
   end
