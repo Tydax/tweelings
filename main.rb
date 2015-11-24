@@ -40,3 +40,12 @@ get '/save_tweets' do
     # TODO: redirect to an error page
   end
 end
+
+get '/clean_tweets' do
+  if request.get?
+    Tweelings::View::AjaxView.clean_tweets  
+  else
+    "Hey, what did you, 'spect"
+    # TODO: redirect to an error page
+  end
+end

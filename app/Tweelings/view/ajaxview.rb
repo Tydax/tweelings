@@ -40,6 +40,25 @@ module Tweelings
     
       def self.save_tweets
         result = Tweelings::TweelingsCore::Core.convert_tweets
+        result = result.map { |tweeling| JSON.generate(tweeling.to_h_for_json) }
+        puts "[AjaxView] save_tweets:: Response sent"
+        JSON.generate(:code => CODE_SUCCESS,
+                      :result => "#{result.length}")
+      end
+
+      def self.clean_tweets
+        result = Tweelings::TweelingsCore::Core.clean_tweets
+        puts "[AjaxView] clean_tweets:: Response sent"
+        res = {
+              :code => CODE_SUCCESS,
+              :result => result
+            }
+
+        JSON.generate(res)
+      end
+
+      def self.send_tweets
+        result = Tweelings::TweelingsCore::Core.convert_tweets
         result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
         puts "[AjaxView] save_tweets:: Response sent"
         #binding.pry
@@ -49,13 +68,6 @@ module Tweelings
             }
 
         JSON.generate(res)
-      end
-
-      def self.clean_tweets
-        result = Tweelings::TweelingsCore::Core.clean_tweets
-        puts "[AjaxView] clean_tweets:: Response sent"
-        JSON.generate(:code => CODE_SUCCESS,
-                      :result => "#{result.length}")
       end
     end
   end

@@ -46,12 +46,9 @@ function saveTweets() {
         var result = JSON.parse(response);
         var tweets = [];
         if (result.code == 0) {
-            for (var i = 0; i < result.result.length; i++) {
-                tweets.push(JSON.parse(result.result[i]));
-            };
             console.log("Saved " + result.result.length + " tweets!");
             lockForm(false);
-            updateTweetList(tweets);
+            cleanTweets();
         }
     });
 }
@@ -64,7 +61,7 @@ function cleanTweets() {
             for (var i = 0; i < result.result.length; i++) {
                 tweets.push(JSON.parse(result.result[i]));
             };
-            console.log("Saved " + result.result.length + " tweets!");
+            console.log("Cleaned " + result.result.length + " tweets!");
             lockForm(false);
             updateTweetList(tweets);
         }
