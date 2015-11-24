@@ -18,7 +18,6 @@ module Tweelings
       end
 
       def self.convert_tweets
-        binding.pry
         @@converted_cache = []
         @@raw_cache.each do |raw_tweet|
           @@converted_cache.push(Tweelings::Object::Tweeling.from_raw(raw_tweet, @@criteria_cache))
