@@ -89,6 +89,7 @@ function updateTweetList(tweets) {
     updateVisible(true);
     updateFeelings(50, 50);
     var tweetListNode = document.getElementById("tweet-list");
+    tweetListNode.innerHTML = "";
 
     for (var i = 0; i < tweets.length; i++) {
         tweetNode = createTweetElement(tweets[i]);
