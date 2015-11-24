@@ -44,16 +44,29 @@ function fetchTweets() {
 function saveTweets() {
     sendRequest("GET", "/save_tweets", null, function(response) {
         var result = JSON.parse(response);
-        
+        var tweets = [];
         if (result.code == 0) {
             for (var i = 0; i < result.result.length; i++) {
-                console.log(result[i]);
+                tweets.push(JSON.parse(result.result[i]));
             };
             console.log("Saved " + result.result.length + " tweets!");
             lockForm(false);
-            console.log(result);
-            console.log(JSON.parse(result.result));
-            updateTweetList(result.result);
+            updateTweetList(tweets);
+        }
+    });
+}
+
+function cleanTweets() {
+    sendRequest("GET", "/clean_tweets", null, function(response) {
+        var result = JSON.parse(response);
+        var tweets = [];
+        if (result.code == 0) {
+            for (var i = 0; i < result.result.length; i++) {
+                tweets.push(JSON.parse(result.result[i]));
+            };
+            console.log("Saved " + result.result.length + " tweets!");
+            lockForm(false);
+            updateTweetList(tweets);
         }
     });
 }
