@@ -40,14 +40,15 @@ module Tweelings
     
       def self.save_tweets
         result = Tweelings::TweelingsCore::Core.convert_tweets
-        result.map! { |tweeling| tweeling.to_h }
+        result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
         puts "[AjaxView] save_tweets:: Response sent"
         binding.pry
-        res = {
-              :code => CODE_SUCCESS,
-              :result => result.to_s
-            }
-        JSON.generate(res)
+        # res = {
+        #       :code => CODE_SUCCESS,
+        #       :result => result.to_s
+        #     }
+
+        JSON.generate(result)
       end
 
       def self.clean_tweets

@@ -73,6 +73,19 @@ module Tweelings
           notation:   @notation
         }
       end
+
+      def to_h_for_json
+        {
+          "id"         => @id,
+          "id_twitter" => @id_twitter,
+          "theme"      => @theme,
+          "author"     => @author,
+          "text"       => @text,
+          "date"       => @date,
+          "criteria"   => @criteria,
+          "notation"   => @notation
+        }
+      end
     end
   end
 end

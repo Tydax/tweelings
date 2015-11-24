@@ -44,7 +44,11 @@ function fetchTweets() {
 function saveTweets() {
     sendRequest("GET", "/save_tweets", null, function(response) {
         var result = JSON.parse(response);
+        
         if (result.code == 0) {
+            for (var i = 0; i < result.result.length; i++) {
+                console.log(result[i]);
+            };
             console.log("Saved " + result.result.length + " tweets!");
             lockForm(false);
             console.log(result);
