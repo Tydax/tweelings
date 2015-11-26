@@ -4,7 +4,7 @@ function createTweetElement(tweet) {
         authorNode = document.createElement("strong");
 
     var textNode = document.createTextNode(tweet.text),
-        authorTextNode = document.createTextNode(tweet.author);
+        authorTextNode = document.createTextNode(tweet.author + ": ");
 
     authorNode.appendChild(authorTextNode);
     pNode.appendChild(authorNode);
@@ -88,8 +88,11 @@ function updateVisible(invisible) {
 function updateTweetList(tweets) {
     updateVisible(true);
     updateFeelings(50, 50);
+
     var tweetListNode = document.getElementById("tweet-list");
-    tweetListNode.innerHTML = "";
+    while (tweetListNode.lastChild) {
+        tweetListNode.removeChild(tweetListNode.lastChild);
+    }
 
     for (var i = 0; i < tweets.length; i++) {
         tweetNode = createTweetElement(tweets[i]);

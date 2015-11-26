@@ -22,7 +22,7 @@ module Tweelings
         @@raw_cache.each do |raw_tweet|
           @@converted_cache.push(Tweelings::Object::Tweeling.from_raw(raw_tweet, @@criteria_cache))
         end
-        DATABASE.save(@@converted_cache, DATABASE::DEF_RAW_DB)
+        #DATABASE.save(@@converted_cache, DATABASE::DEF_RAW_DB)
         @@converted_cache
       end
 
@@ -33,7 +33,7 @@ module Tweelings
             tweeling.text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text)
             @@cleaned_cache.push(tweeling)
         end
-        DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
+        #DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
         @@cleaned_cache
       end
     end
