@@ -96,7 +96,7 @@ h1 {
 }
 
 #feelings-bar {
-    color: white;
+    color: black;
     font-size: 14px;
     text-align: center;
     width: calc(100% - 3em);
@@ -110,11 +110,47 @@ h1 {
 #good {
     background-color: green;
     border-radius: 5px 0 0 5px;
+    color: green;
+}
+
+#neutral {
+    background-color: silver;
+    border-radius: 0 0 0 0;
+    color: silver;
 }
 
 #bad {
     background-color: red;
     border-radius: 0 5px 5px 0;
+    color: red;
+}
+
+#legend div {
+    display: inline-block;
+}
+
+#good_color {
+    background-color: green;
+    color: green;
+    width: 20px;
+    vertical-align: middle;
+    height: 20px;
+}
+
+#neutral_color {
+    background-color: silver;
+    color: silver;
+    width: 20px;
+    vertical-align: middle;
+    height: 20px;
+}
+
+#bad_color {
+    background-color: red;
+    color: red;
+    width: 20px;
+    vertical-align: middle;
+    height: 20px;
 }
 
 #tweet-list {

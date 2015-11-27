@@ -68,6 +68,40 @@ function cleanTweets() {
             console.log("Cleaned " + result.result.length + " tweets!");
             lockForm(false);
             updateTweetList(tweets);
+            anotateTweets();
+        }
+    });
+}
+
+function anotateTweets() {
+    sendRequest("POST", "/anotate_tweets", null, function(response) {
+        var result = JSON.parse(response);
+        var tweets = [];
+        var good = 0;
+        var neutral = 0;
+        var bad = 0;
+        
+        if (result.code == 0) {
+            for (var i = 0; i < result.result.length; i++) {
+                tweets.push(JSON.parse(result.result[i]));
+            };
+            console.log("Anotated " + result.result.length + " tweets!");
+            for (var i = 0; i < tweets.length; i++) {
+                switch(tweets[i].notation){
+                    case 0:
+                        bad++;
+                        break;
+                    case 2:
+                        neutral++;
+                        break;
+                    case 4:
+                        good++;
+                        break;
+                }
+            };
+            lockForm(false);
+            updateFeelings(good, neutral, bad);
+            updateTweetList(tweets);
         }
     });
 }
