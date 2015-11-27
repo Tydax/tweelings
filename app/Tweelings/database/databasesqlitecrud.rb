@@ -23,17 +23,16 @@ module Tweelings
       # Initialises a new CRUD object to interact with the specified table.
       #   Creates the SQL table if it does not exist. 
       #
-      # @param tablename [String] the name of the table
-      # @param id [String] the name of the field representing the id
-      # @param fields [Hash<Symbol, String>] the hash containing the field name in Symbol as the keys and the SQL type String as the value 
+      # @param tablename [Symbol] the name of the table
+      # @param id [Symbol] the name of the field representing the id
+      # @param fields [Array<Symbol>] the Array containing the field name in Symbol 
       ##
       def initialize(tablename, id, fields)
         @table = tablename
         @id = id
-        @fields = fields.keys.map { |e| e.to_s }
-        @fields_joined = @fields.join(', ')
-        
-        keys = fields.keys.map { |e| ':' + e.to_s }
+        @fields = fields
+        @fields_joined = @fields.join(', ').intern
+        keys = @fields.map { |k| ":" << k.to_s}
 
         ## Requests
         REQUESTS[:fetch]  = "SELECT #{@fields_joined} FROM #{@table} %s;"
@@ -43,24 +42,7 @@ module Tweelings
         # Creating a "id = :id" formated string
         f = []
         @fields.zip(Array.new(@fields.size, ' = '), keys) { |e| f.push(e.join) }
-        REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id};"
-
-        f = []
-        fields.each { |key, value| f << "#{key.to_s} #{value}" + (key.to_s == id ? " PRIMARY KEY" : "") }
-        req = "CREATE TABLE IF NOT EXISTS #{tablename} (%s);" % f.join(", ")
-
-        binding.pry
-
-        begin
-          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
-          db.execute(req)
-        rescue SQLite3::SQLException => e
-          # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::fetch] Error code #{e.code}"
-          raise "Failed to initialise DatabaseSQLiteCRUD object"
-        ensure
-          db.close
-        end
+        REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id.to_s};"
       end
 
       ##
@@ -94,7 +76,7 @@ module Tweelings
       ##
       # Inserts a new row.
       #
-      # @param [Array<Object>] object the object to be inserted
+      # @param [Array<#id>] object the object to be inserted
       # @returns [true, false] whether the request succeeded or not
       ##
       def save(*objects)
@@ -105,6 +87,7 @@ module Tweelings
           db.prepare(req) do |stmt|
             objects.each do |obj|
               stmt.execute(to_row(obj))
+              obj.id = 
             end
           end
           true

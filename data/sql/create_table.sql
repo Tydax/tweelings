@@ -10,13 +10,16 @@
 
 
  -- RAW_TWEET
- CREATE TABLE raw_tweet (
+ CREATE TABLE tweets (
     `id`            INTEGER PRIMARY KEY,
-    `id_twitter`    INTEGER,
-    `theme`         VARCHAR(100),
-    `author`        VARCHAR(50),
-    `text`          VARCHAR(170),
-    `date`          TEXT,
-    `criteria`      VARCHAR(150),
-    `notation`      INTEGER
+    `id_twitter`    INTEGER UNIQUE,
+    `theme`         VARCHAR(100) NOT NULL,
+    `author`        VARCHAR(50) NOT NULL,
+    `text`          VARCHAR(170) NOT NULL,
+    `cleaned_text`  VARCHAR(250),
+    `date`          TEXT NOT NULL,
+    `criteria`      VARCHAR(150) NOT NULL,
+    `notation`      INTEGER,
+    `verified`      NUMERIC NOT NULL
 );
+
