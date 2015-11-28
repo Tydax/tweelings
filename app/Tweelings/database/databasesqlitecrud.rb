@@ -41,7 +41,7 @@ module Tweelings
         
         # Creating a "id = :id" formated string
         f = []
-        @fields.zip(Array.new(@fields.size, ' = '), keys) { |e| f.push(e.join) }
+        @fields.zip(Array.new(@fields.size, ' = '), keys) { |e| f << e.join }
         REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id.to_s};"
       end
 
@@ -58,16 +58,18 @@ module Tweelings
         res = []
 
         begin
-          db = SQLite3::Database.new(DB_PATH)
-          db.execute(req, index) do |row|
-            res.push(from_row(row))
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.prepare(req) do |stmt|
+            stmt.execute(index) do |row|
+              res << from_row(row)
+            end
           end
         rescue SQLite3::SQLException => e
           # @todo Log the exception
           puts "[Error][DatabaseSQLiteCRUD::fetch] Error code #{e.code}"
           res = nil
         ensure
-          db.close
+          db.close if db
         end
 
         res
@@ -83,7 +85,7 @@ module Tweelings
         req = REQUESTS[:save]
 
         begin
-          db = SQLite3::Database.new(DB_PATH)
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
             objects.each do |obj|
               stmt.execute(to_row(obj))
@@ -96,7 +98,7 @@ module Tweelings
           puts "[Error][DatabaseSQLiteCRUD::save] Error code #{e.code}"
           false
         ensure
-          db.close
+          db.close if db
         end
       end
 
@@ -110,7 +112,7 @@ module Tweelings
         req = REQUESTS[:delete] % Array.new(indexes.size, '?').join(', ')
         
         begin
-          db = SQLite3::Database.new(DB_PATH)
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) { |stmt| stmt.execute(indexes) }
           true
         rescue SQLite3::SQLException => e
@@ -118,7 +120,7 @@ module Tweelings
           puts "[Error][DatabaseSQLiteCRUD::delete] Error code #{e.code}"
           false
         ensure
-          db.close
+          db.close if db
         end
       end
 
@@ -131,14 +133,14 @@ module Tweelings
         req = REQUESTS[:update]
 
         begin
-          db = SQLite3::Database.new(DB_PATH)
-          db.execute(req, to_row(object))
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.prepare(req) { |stmt| stmt.execute(to_row(object)) }
         rescue SQLite3::SQLException => e
           # @todo Log the exception
           puts "[Error][DatabaseSQLiteCRUD::update] Error code #{e.code}"
           false
         ensure
-          db.close
+          db.close if db
         end
       end
 
