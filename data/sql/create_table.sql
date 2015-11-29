@@ -10,7 +10,7 @@
 
 
  -- RAW_TWEET
- CREATE TABLE tweets (
+ CREATE TABLE IF NOT EXISTS tweeling (
     `id`            INTEGER PRIMARY KEY,
     `id_twitter`    INTEGER UNIQUE,
     `theme`         VARCHAR(100) NOT NULL,

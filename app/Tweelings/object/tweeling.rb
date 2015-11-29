@@ -34,7 +34,7 @@ module Tweelings
         @date = params[:date]
         @criteria = params[:criteria]
         @notation = params[:notation]
-        @verified = param[:verified]
+        @verified = params[:verified]
       end
 
       ##

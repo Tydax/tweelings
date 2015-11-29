@@ -10,6 +10,7 @@ module Tweelings
   # Database
   require 'Tweelings/database/databasecsv'
   require 'Tweelings/database/databasesqlitecrud'
+  require 'Tweelings/database/dbtweeling'
 
   # Object
   require 'Tweelings/object/criteria'

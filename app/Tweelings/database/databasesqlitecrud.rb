@@ -60,16 +60,22 @@ module Tweelings
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
-            stmt.execute(index) do |row|
-              res << from_row(row)
+            if index
+              stmt.execute(index) do |row|
+                res << from_row(row)
+              end
+            else
+              stmt.execute do |row|
+                res << from_row(row)
+              end
             end
           end
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::fetch] Error code #{e.code}"
+          puts "[Error][DatabaseSQLiteCRUD::fetch] SQLException::Error code #{e.code}"
           res = nil
         ensure
-          db.close if db
+          db.close unless db.closed? if db
         end
 
         res
@@ -83,22 +89,27 @@ module Tweelings
       ##
       def save(*objects)
         req = REQUESTS[:save]
-
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
             objects.each do |obj|
-              stmt.execute(to_row(obj))
-              obj.id = 
+              begin
+                stmt.execute(to_row(obj))
+                obj.id = db.last_insert_row_id
+              rescue SQLite3::ConstraintException => e
+                puts "[Info][DatabaseSQLiteCRUD::save] Not inserting already existing tweet"
+              end
             end
           end
           true
+        rescue SQLite3::ConstraintException => e
+          # @todo Log the exception
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::save] Error code #{e.code}"
+          puts "[Error][DatabaseSQLiteCRUD::save] SQLException::Error code #{e.code}"
           false
         ensure
-          db.close if db
+          db.close unless db.closed? if db
         end
       end
 
@@ -117,10 +128,10 @@ module Tweelings
           true
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::delete] Error code #{e.code}"
-          false
+          puts "[Error][DatabaseSQLiteCRUD::delete] SQLException::Error code #{e.code}"
+          false          
         ensure
-          db.close if db
+          db.close unless db.closed? if db
         end
       end
 
@@ -137,10 +148,10 @@ module Tweelings
           db.prepare(req) { |stmt| stmt.execute(to_row(object)) }
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::update] Error code #{e.code}"
+          puts "[Error][DatabaseSQLiteCRUD::update] SQLException::Error code #{e.code}"
           false
         ensure
-          db.close if db
+          db.close unless db.closed? if db
         end
       end
 
@@ -149,10 +160,16 @@ module Tweelings
       # Called by #save and #update.
       #
       # @param object [#to_h] the object to transform
-      # @returns [Hash<String, Object>] a hash containing the column name as keys and the attributes of the object as values.
+      # @returns [Hash<Symbol, Object>] a hash containing the column name as keys and the attributes of the object as values.
       ##
       def to_row(object)
-        object.to_h.each_key { |key| key.to_s }
+        hash = object.to_h
+        hash.each do |k, v|
+          case v
+          when TrueClass then hash[k] = 1
+          when FalseClass then hash[k] = 0
+          end
+        end
       end
 
       ##

@@ -10,17 +10,20 @@ module Tweelings
       TABLE  = :tweeling
       ID     = :id
       FIELDS = [
-        id:,
-        id_twitter:,
-        theme:,
-        author:,
-        text:,
-        cleaned_text:
-        date:,
-        criteria:,
-        notation:,
-        verified:
+        :id,
+        :id_twitter,
+        :theme,
+        :author,
+        :text,
+        :cleaned_text,
+        :date,
+        :criteria,
+        :notation,
+        :verified
       ]
+
+      # Path to the SQL file to initialise database
+      SQL_PATH = "data/sql/create_table.sql"
 
       ##
       # Initialises a new instance of the database object with the specific requests.
@@ -29,7 +32,24 @@ module Tweelings
         super(TABLE, ID, FIELDS)
 
         REQUESTS[:fetch_uncleaned] = REQUESTS[:fetch] % " WHERE cleaned_text IS NULL %s"
-        REQUESTS[:fetch_unverified] = REQUESTS[:fetch] % " WHERE verified = '0' %s" 
+        REQUESTS[:fetch_unverified] = REQUESTS[:fetch] % " WHERE verified = '0' %s"
+
+        begin
+          file = File.open(SQL_PATH, "rb")
+          req = file.read
+
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.execute_batch(req)
+        rescue Errno::ENOENT
+          # @todo Log the exception
+          puts "[Error][DBTweeling::initialize] File %s does not exist" % SQL_PATH
+        rescue SQLite3::SQLException => e
+          # @todo Log the exception
+          puts "[Error][DBTweeling::initialize] SQLException::Error code #{e.code}"
+        ensure
+          file.close if file
+          db.close unless db.closed? if db
+        end
       end
 
       ##
@@ -47,16 +67,22 @@ module Tweelings
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           res = []
           db.prepare(req) do |stmt|
-            stmt.execute(arg) do |row|
-              res << from_row(row)
+            if arg
+              stmt.execute(arg) do |row|
+                res << from_row(row)
+              end
+            else
+              stmt.execute(arg) do |row|
+                res << from_row(row)
+              end
             end
           end
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DBTweeling::fetch] Error code #{e.code}"
+          puts "[Error][DBTweeling::basic_fetch] SQLException::Error code #{e.code}"
           res = nil
         ensure
-          db.close if db
+          db.close unless db.closed? if db
         end
 
         res
