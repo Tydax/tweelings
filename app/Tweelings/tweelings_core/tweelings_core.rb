@@ -31,7 +31,7 @@ module Tweelings
         @@cleaned_cache = []
 
         @@converted_cache.each do |tweeling|
-            tweeling.text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text)
+            tweeling.cleaned_text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text)
             @@cleaned_cache.push(tweeling)
         end
         #DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
