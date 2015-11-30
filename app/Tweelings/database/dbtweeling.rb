@@ -31,8 +31,8 @@ module Tweelings
       def initialize
         super(TABLE, ID, FIELDS)
 
-        REQUESTS[:fetch_uncleaned] = REQUESTS[:fetch] % " WHERE cleaned_text IS NULL %s"
-        REQUESTS[:fetch_unverified] = REQUESTS[:fetch] % " WHERE verified = '0' %s"
+        REQUESTS[:fetch_uncleaned] = REQUESTS[:fetch] % "WHERE cleaned_text IS NULL %s"
+        REQUESTS[:fetch_unverified] = REQUESTS[:fetch] % "WHERE verified = '0' %s"
 
         begin
           file = File.open(SQL_PATH, "rb")
@@ -68,12 +68,12 @@ module Tweelings
           res = []
           db.prepare(req) do |stmt|
             if arg
-              stmt.execute(arg) do |row|
-                res << from_row(row)
+              stmt.execute(arg) do |results|
+                results.each_hash { |row| res << from_row(row) }
               end
             else
-              stmt.execute(arg) do |row|
-                res << from_row(row)
+              stmt.execute do |results|
+                results.each_hash { |row| res << from_row(row) }
               end
             end
           end
@@ -127,7 +127,17 @@ module Tweelings
       ##
       def fetch_unverified(theme = nil)
         req = REQUESTS[:fetch_unverified] % (theme ? "AND theme = ?" : "")
-        basic_fetch(req_theme)
+        basic_fetch(req, theme)
+      end
+
+      ##
+      # Converts the row into a [Tweelings::Object::Tweeling] instance.
+      #
+      # @param row [Hash] the row to transform
+      # @returns [Tweelings::Object::Tweeling] the resulting object
+      ##
+      def from_row(row)
+        Tweelings::Object::Tweeling.new(super(row))
       end
 
       private :basic_fetch

@@ -9,7 +9,7 @@
  */
 
 
- -- RAW_TWEET
+ -- TWEELING
  CREATE TABLE IF NOT EXISTS tweeling (
     `id`            INTEGER PRIMARY KEY,
     `id_twitter`    INTEGER UNIQUE,
@@ -20,6 +20,6 @@
     `date`          TEXT NOT NULL,
     `criteria`      VARCHAR(150) NOT NULL,
     `notation`      INTEGER,
-    `verified`      NUMERIC NOT NULL
+    `verified`      INTEGER NOT NULL
 );
 

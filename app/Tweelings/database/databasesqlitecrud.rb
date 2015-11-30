@@ -61,12 +61,12 @@ module Tweelings
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
             if index
-              stmt.execute(index) do |row|
-                res << from_row(row)
+              stmt.execute(index) do |results|
+                results.each_hash { |row| res << from_row(row) }
               end
             else
-              stmt.execute do |row|
-                res << from_row(row)
+              stmt.execute do |results|
+                results.each_hash { |row| res << from_row(row) }
               end
             end
           end
@@ -170,6 +170,7 @@ module Tweelings
           when FalseClass then hash[k] = 0
           end
         end
+        hash
       end
 
       ##
@@ -177,9 +178,10 @@ module Tweelings
       # Called by #fetch.
       #
       # @param row [Hash] the row to transform
-      # @returns [Object] an object representing the fetched row
+      # @returns [Hash] the row
+      ##
       def from_row(row)
-        row
+        row.each_with_object({}) { |(k, v), h| h[k.to_sym] = v}
       end
     end
   end
