@@ -56,7 +56,19 @@ module Tweelings
         result = Tweelings::TweelingsCore::Core.clean_tweets
         result = result.map { |tweeling| JSON.generate(tweeling.to_h_for_json) }
         puts "[AjaxView] clean_tweets:: Response sent"
-        binding.pry
+        #binding.pry
+        res = {
+              :code => CODE_SUCCESS,
+              :result => result
+            }
+
+        JSON.generate(res)
+      end
+
+      def self.anotate_tweets
+        result = Tweelings::TweelingsCore::Core.anotate_tweets
+        result = result.map { |tweeling| JSON.generate(tweeling.to_h_for_json) }
+        puts "[AjaxView] anotate_tweets:: Response sent"
         res = {
               :code => CODE_SUCCESS,
               :result => result

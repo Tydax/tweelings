@@ -43,42 +43,42 @@ function hideError() {
     errorNode.className += " invisible";
 }
 
-function updateFeelings(good, bad) {
+function updateFeelings(good, neutral, bad) {
+    var statsNode = document.getElementById("stats");
     var feelingsBar = document.getElementById("feelings-bar");
     var goodBar = document.getElementById("good");
+    var neutralBar = document.getElementById("neutral");
     var badBar = document.getElementById("bad");
     var smileyImg = document.getElementById("smiley").getElementsByTagName("img")[0];
+    var goodScore = document.getElementById("good_score");
+    var neutralScore = document.getElementById("neutral_score");
+    var badScore = document.getElementById("bad_score");
 
-    var goodRate = good * 100 / (good + bad);
-    var badRate = bad * 100 / (good + bad);
+    var total = (good + neutral + bad);
+    var goodRate = good * 100 / total;
+    var neutralRate = neutral * 100 / total;
+    var badRate = bad * 100 / total;
 
     goodBar.style.width = goodRate + "%";
-    goodBar.innerHTML  = Math.round(goodRate) + "%";
+    neutralBar.style.width = neutralRate + "%";
     badBar.style.width = badRate + "%";
-    badBar.innerHTML  = Math.round(badRate) + "%";
 
-    if(goodRate > 55) {
+    goodScore.innerHTML = Math.round(goodRate) + "%";
+    neutralScore.innerHTML = Math.round(neutralRate) + "%";
+    badScore.innerHTML = Math.round(badRate) + "%";
+
+    var score = goodRate - badRate;
+    if(score > 0) {
         smileyImg.src = 'resources/happy.png';
     }
-    else if (goodRate < 45) {
+    else if (score < 0) {
         smileyImg.src = 'resources/angry.png';
     } 
     else {
         smileyImg.src = 'resources/neutral.png';
     }
-}
 
-function updateVisible(invisible) {
-    var emptyNode = document.getElementById("empty");
-    var statsNode = document.getElementById("stats");
-    if (invisible) {
-        emptyNode.className = "invisible";
-        statsNode.className = "";
-    }
-    else {
-        emptyNode.className = "";
-        statsNode.className = "invisible";
-    }
+    statsNode.className = "";
 }
 
 /*
@@ -86,8 +86,8 @@ function updateVisible(invisible) {
  * tweets: the list of all tweets to display
  */
 function updateTweetList(tweets) {
-    updateVisible(true);
-    updateFeelings(50, 50);
+    var emptyNode = document.getElementById("empty");
+    emptyNode.className = "invisible";
 
     var tweetListNode = document.getElementById("tweet-list");
     while (tweetListNode.lastChild) {

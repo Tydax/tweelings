@@ -11,6 +11,7 @@ module Tweelings
       @@criteria_cache
       @@converted_cache
       @@cleaned_cache
+      @@anotated_cache
 
       def self.fetch_tweets(criteria)
         @@criteria_cache = criteria
@@ -32,6 +33,16 @@ module Tweelings
         @@converted_cache.each do |tweeling|
             tweeling.text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text)
             @@cleaned_cache.push(tweeling)
+        end
+        #DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
+        @@cleaned_cache
+      end
+
+      def self.anotate_tweets
+        @@anotated_cache = []
+
+        @@cleaned_cache.each do |tweeling|
+            tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text)
         end
         #DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
         @@cleaned_cache
