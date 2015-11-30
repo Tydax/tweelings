@@ -23,17 +23,16 @@ module Tweelings
       # Initialises a new CRUD object to interact with the specified table.
       #   Creates the SQL table if it does not exist. 
       #
-      # @param tablename [String] the name of the table
-      # @param id [String] the name of the field representing the id
-      # @param fields [Hash<Symbol, String>] the hash containing the field name in Symbol as the keys and the SQL type String as the value 
+      # @param tablename [Symbol] the name of the table
+      # @param id [Symbol] the name of the field representing the id
+      # @param fields [Array<Symbol>] the Array containing the field name in Symbol 
       ##
       def initialize(tablename, id, fields)
         @table = tablename
         @id = id
-        @fields = fields.keys.map { |e| e.to_s }
-        @fields_joined = @fields.join(', ')
-        
-        keys = fields.keys.map { |e| ':' + e.to_s }
+        @fields = fields
+        @fields_joined = @fields.join(', ').intern
+        keys = @fields.map { |k| ":" << k.to_s}
 
         ## Requests
         REQUESTS[:fetch]  = "SELECT #{@fields_joined} FROM #{@table} %s;"
@@ -42,23 +41,8 @@ module Tweelings
         
         # Creating a "id = :id" formated string
         f = []
-        @fields.zip(Array.new(@fields.count, ' = '), keys) { |e| f.push(e.join) }
-        REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id};"
-
-        f = []
-        fields.each { |key, value| f << "#{key.to_s} #{value}"}
-        req = "CREATE TABLE IF NOT EXISTS #{tablename} (%s);" % f.join(", ")
-
-        begin
-          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
-          db.execute(req)
-        rescue SQLite3::SQLException => e
-          # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::fetch] Error code #{e.code}"
-          raise "Failed to initialise DatabaseSQLiteCRUD object"
-        ensure
-          db.close
-        end
+        @fields.zip(Array.new(@fields.size, ' = '), keys) { |e| f << e.join }
+        REQUESTS[:update] = "UPDATE #{@table} SET #{f.join(', ')} WHERE #{@id} = #{':' << @id.to_s};"
       end
 
       ##
@@ -74,16 +58,24 @@ module Tweelings
         res = []
 
         begin
-          db = SQLite3::Database.new(DB_PATH)
-          db.execute(req, index) do |row|
-            res.push(from_row(row))
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.prepare(req) do |stmt|
+            if index
+              stmt.execute(index) do |results|
+                results.each_hash { |row| res << from_row(row) }
+              end
+            else
+              stmt.execute do |results|
+                results.each_hash { |row| res << from_row(row) }
+              end
+            end
           end
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::fetch] Error code #{e.code}"
+          puts "[Error][DatabaseSQLiteCRUD::fetch] SQLException::Error code #{e.code}"
           res = nil
         ensure
-          db.close
+          db.close unless db.closed? if db
         end
 
         res
@@ -92,26 +84,32 @@ module Tweelings
       ##
       # Inserts a new row.
       #
-      # @param [Array<Object>] object the object to be inserted
+      # @param [Array<#id>] object the object to be inserted
       # @returns [true, false] whether the request succeeded or not
       ##
       def save(*objects)
         req = REQUESTS[:save]
-
         begin
-          db = SQLite3::Database.new(DB_PATH)
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
             objects.each do |obj|
-              stmt.execute(to_row(obj))
+              begin
+                stmt.execute(to_row(obj))
+                obj.id = db.last_insert_row_id
+              rescue SQLite3::ConstraintException => e
+                puts "[Info][DatabaseSQLiteCRUD::save] Not inserting already existing tweet"
+              end
             end
           end
           true
+        rescue SQLite3::ConstraintException => e
+          # @todo Log the exception
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::save] Error code #{e.code}"
+          puts "[Error][DatabaseSQLiteCRUD::save] SQLException::Error code #{e.code}"
           false
         ensure
-          db.close
+          db.close unless db.closed? if db
         end
       end
 
@@ -122,18 +120,18 @@ module Tweelings
       # @returns [true, false] whether the request succeeded or not
       ##
       def delete(*indexes)
-        req = REQUESTS[:delete] % Array.new(indexes.count, '?').join(', ')
+        req = REQUESTS[:delete] % Array.new(indexes.size, '?').join(', ')
         
         begin
-          db = SQLite3::Database.new(DB_PATH)
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) { |stmt| stmt.execute(indexes) }
           true
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::delete] Error code #{e.code}"
-          false
+          puts "[Error][DatabaseSQLiteCRUD::delete] SQLException::Error code #{e.code}"
+          false          
         ensure
-          db.close
+          db.close unless db.closed? if db
         end
       end
 
@@ -146,14 +144,14 @@ module Tweelings
         req = REQUESTS[:update]
 
         begin
-          db = SQLite3::Database.new(DB_PATH)
-          db.execute(req, to_row(object))
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.prepare(req) { |stmt| stmt.execute(to_row(object)) }
         rescue SQLite3::SQLException => e
           # @todo Log the exception
-          puts "[Error][DatabaseSQLiteCRUD::update] Error code #{e.code}"
+          puts "[Error][DatabaseSQLiteCRUD::update] SQLException::Error code #{e.code}"
           false
         ensure
-          db.close
+          db.close unless db.closed? if db
         end
       end
 
@@ -162,10 +160,17 @@ module Tweelings
       # Called by #save and #update.
       #
       # @param object [#to_h] the object to transform
-      # @returns [Hash<String, Object>] a hash containing the column name as keys and the attributes of the object as values.
+      # @returns [Hash<Symbol, Object>] a hash containing the column name as keys and the attributes of the object as values.
       ##
       def to_row(object)
-        object.to_h.each_key { |key| key.to_s }
+        hash = object.to_h
+        hash.each do |k, v|
+          case v
+          when TrueClass then hash[k] = 1
+          when FalseClass then hash[k] = 0
+          end
+        end
+        hash
       end
 
       ##
@@ -173,9 +178,10 @@ module Tweelings
       # Called by #fetch.
       #
       # @param row [Hash] the row to transform
-      # @returns [Object] an object representing the fetched row
+      # @returns [Hash] the row
+      ##
       def from_row(row)
-        row
+        row.each_with_object({}) { |(k, v), h| h[k.to_sym] = v}
       end
     end
   end
