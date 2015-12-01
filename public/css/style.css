@@ -168,6 +168,10 @@ h1 {
     padding: 9px 20px;
 }
 
+#tweet-list p:nth-child(2) {
+    text-align: right;
+}
+
 #search-config {
     width: 37%;
     height: 100%;

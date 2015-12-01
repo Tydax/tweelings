@@ -1,15 +1,39 @@
 function createTweetElement(tweet) {
     var tweetNode = document.createElement("li"),
         pNode = document.createElement("p"),
+        notationNode = document.createElement("p"),
         authorNode = document.createElement("strong");
 
     var textNode = document.createTextNode(tweet.text),
         authorTextNode = document.createTextNode(tweet.author + ": ");
 
+    var array = ["Good","Neutral","Bad"];
+    var notationList = document.createElement("select");
+    for (var i = 0; i < array.length; i++) {
+        var option = document.createElement("option");
+        option.value = array[i];
+        option.text = array[i];
+        notationList.appendChild(option);
+    }
+
+    switch(tweet.notation) {
+        case 0:
+            notationList.selectedIndex = "2";
+            break;
+        case 2:
+            notationList.selectedIndex = "1";
+            break;
+        case 4:
+            notationList.selectedIndex = "0";
+            break;
+    }
+
     authorNode.appendChild(authorTextNode);
     pNode.appendChild(authorNode);
     pNode.appendChild(textNode);
+    notationNode.appendChild(notationList);
     tweetNode.appendChild(pNode);
+    tweetNode.appendChild(notationNode);
 
     return tweetNode;
 }
@@ -93,6 +117,8 @@ function updateTweetList(tweets) {
     while (tweetListNode.lastChild) {
         tweetListNode.removeChild(tweetListNode.lastChild);
     }
+
+    console.log(tweets);
 
     for (var i = 0; i < tweets.length; i++) {
         tweetNode = createTweetElement(tweets[i]);
