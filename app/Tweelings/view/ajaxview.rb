@@ -23,10 +23,11 @@ module Tweelings
         
         begin
           result = Tweelings::TweelingsCore::Core.fetch_tweets(criteria)
+          result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
           puts "[AjaxView] fetch_tweets:: Response sent"
           res = {
             :code => CODE_SUCCESS,
-            :result => "#{result.length}"
+            :result => result
           }
         rescue Twitter::Error::TooManyRequests => error
           res = {
@@ -37,26 +38,11 @@ module Tweelings
 
         JSON.generate(res)
       end
-    
-      def self.save_tweets
-        result = Tweelings::TweelingsCore::Core.convert_tweets
-        result = result.map { |tweeling| JSON.generate(tweeling.to_h_for_json) }
-        puts "[AjaxView] save_tweets:: Response sent"
-        #JSON.generate(:code => CODE_SUCCESS,
-                      #:result => "#{result.length}")
-        res = {
-              :code => CODE_SUCCESS,
-              :result => result
-            }
-
-        JSON.generate(res)
-      end
 
       def self.clean_tweets
         result = Tweelings::TweelingsCore::Core.clean_tweets
-        result = result.map { |tweeling| JSON.generate(tweeling.to_h_for_json) }
+        # binding.pry
         puts "[AjaxView] clean_tweets:: Response sent"
-        #binding.pry
         res = {
               :code => CODE_SUCCESS,
               :result => result
@@ -65,9 +51,10 @@ module Tweelings
         JSON.generate(res)
       end
 
-      def self.anotate_tweets
-        result = Tweelings::TweelingsCore::Core.anotate_tweets
-        result = result.map { |tweeling| JSON.generate(tweeling.to_h_for_json) }
+      def self.annotate_tweets
+        result = Tweelings::TweelingsCore::Core.annotate_tweets
+        # binding.pry
+        result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
         puts "[AjaxView] anotate_tweets:: Response sent"
         res = {
               :code => CODE_SUCCESS,

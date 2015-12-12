@@ -31,28 +31,18 @@ function fetchTweets() {
     lockForm(true);
     sendRequest("POST", "/fetch_tweets", parameters, function(response) {
         var result = JSON.parse(response);
-        if (result.code == 0) {
-            console.log("Fetched " + result.result + " tweets!");
-            saveTweets();
-        } else {
-            console.log("Error code: " + result.code);
-            displayError(result.code, result.result);
-        }
-    });
-}
-
-function saveTweets() {
-    sendRequest("GET", "/save_tweets", null, function(response) {
-        var result = JSON.parse(response);
         var tweets = [];
         if (result.code == 0) {
             for (var i = 0; i < result.result.length; i++) {
                 tweets.push(JSON.parse(result.result[i]));
             };
-            console.log("Saved " + result.result.length + " tweets!");
+            console.log("Fetched " + result.result.length + " tweets!");
             lockForm(false);
             updateTweetList(tweets);
             cleanTweets();
+        } else {
+            console.log("Error code: " + result.code);
+            displayError(result.code, result.result);
         }
     });
 }
@@ -62,19 +52,14 @@ function cleanTweets() {
         var result = JSON.parse(response);
         var tweets = [];
         if (result.code == 0) {
-            for (var i = 0; i < result.result.length; i++) {
-                tweets.push(JSON.parse(result.result[i]));
-            };
             console.log("Cleaned " + result.result.length + " tweets!");
-            lockForm(false);
-            updateTweetList(tweets);
-            anotateTweets();
+            annotateTweets();
         }
     });
 }
 
-function anotateTweets() {
-    sendRequest("POST", "/anotate_tweets", null, function(response) {
+function annotateTweets() {
+    sendRequest("POST", "/annotate_tweets", null, function(response) {
         var result = JSON.parse(response);
         tweets = [];
         var good = 0;

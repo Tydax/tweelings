@@ -3,49 +3,36 @@ module Tweelings
     module Core
 
       TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
-      DATABASE = Tweelings::Database::DatabaseCSV
+      DATABASE = Tweelings::Database::DBTweeling.new
 
       ##
       # Caches to store pending tweets 
-      @@raw_cache
-      @@criteria_cache
-      @@converted_cache
-      @@cleaned_cache
-      @@anotated_cache
+      @@indexes
 
       def self.fetch_tweets(criteria)
-        @@criteria_cache = criteria
-        @@raw_cache = TWITTER_CLIENT.fetch_tweets(criteria)
+        cache = []
+        TWITTER_CLIENT.fetch_tweets(criteria).each do |raw_tweet|
+          cache << Tweelings::Object::Tweeling.from_raw(raw_tweet, criteria)
+        end
+        DATABASE.save(*cache)
+        # Store indexes saved
+        @@indexes = cache.each_with_object([]) { |tweeling, a| a << tweeling.id if tweeling.id }
+        cache
       end
 
-      def self.convert_tweets
-        @@converted_cache = []
-        @@raw_cache.each do |raw_tweet|
-          @@converted_cache.push(Tweelings::Object::Tweeling.from_raw(raw_tweet, @@criteria_cache))
-        end
-        #DATABASE.save(@@converted_cache, DATABASE::DEF_RAW_DB)
-        @@converted_cache
+      def self.clean_tweets        
+        cache = DATABASE.fetch(*@@indexes)
+        cache.each { |tweeling| tweeling.cleaned_text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text) }
+        DATABASE.update(*cache)
       end
 
-      def self.clean_tweets
-        @@cleaned_cache = []
-
-        @@converted_cache.each do |tweeling|
-            tweeling.cleaned_text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text)
-            @@cleaned_cache.push(tweeling)
-        end
-        #DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
-        @@cleaned_cache
-      end
-
-      def self.anotate_tweets
-        @@anotated_cache = []
-
-        @@cleaned_cache.each do |tweeling|
-            tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text)
-        end
-        #DATABASE.save(@@cleaned_cache, DATABASE::DEF_CLEANED_DB)
-        @@cleaned_cache
+      def self.annotate_tweets
+        cache = DATABASE.fetch(*@@indexes)
+        cache.each { |tweeling| tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text) }
+        DATABASE.update(*cache)
+        # @todo delete this line
+        DATABASE.delete(*@@indexes)
+        cache
       end
     end
   end

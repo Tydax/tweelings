@@ -48,24 +48,28 @@ module Tweelings
       ##
       # Retrieves all the rows.
       #
-      # @param index [Integer, nil] the index of the row to fetch
-      #   if nil, all rows will be fetched
+      # @param *indexes [Integer] the indexes of the row to fetch
+      #   if empty, all rows will be fetched
       # @returns [Array<Object>, nil] an array of the rows converted to objects
       #   or nil if an exception occured.
       ##
-      def fetch(index = nil)
-        req = REQUESTS[:fetch] % (index ? " WHERE #{@id} = ?" : "")
-        res = []
+      def fetch(*indexes)
+        if indexes.empty?
+          req = REQUESTS[:fetch] % ""
+        else
+          req = REQUESTS[:fetch] % "WHERE #{@id} IN(%s)" % Array.new(indexes.size, '?').join(', ')
+        end
 
+        res = []
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
-            if index
-              stmt.execute(index) do |results|
+            if indexes.empty?
+              stmt.execute do |results|
                 results.each_hash { |row| res << from_row(row) }
               end
             else
-              stmt.execute do |results|
+              stmt.execute(indexes) do |results|
                 results.each_hash { |row| res << from_row(row) }
               end
             end
@@ -88,6 +92,7 @@ module Tweelings
       # @returns [true, false] whether the request succeeded or not
       ##
       def save(*objects)
+        res = 0;
         req = REQUESTS[:save]
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
@@ -96,21 +101,20 @@ module Tweelings
               begin
                 stmt.execute(to_row(obj))
                 obj.id = db.last_insert_row_id
+                res += 1
               rescue SQLite3::ConstraintException => e
-                puts "[Info][DatabaseSQLiteCRUD::save] Not inserting already existing tweet"
+                puts "[Info][DatabaseSQLiteCRUD::save] Not inserting already existing tweeling"
               end
             end
           end
-          true
-        rescue SQLite3::ConstraintException => e
-          # @todo Log the exception
         rescue SQLite3::SQLException => e
           # @todo Log the exception
           puts "[Error][DatabaseSQLiteCRUD::save] SQLException::Error code #{e.code}"
-          false
+          res = -1
         ensure
           db.close unless db.closed? if db
         end
+        res
       end
 
       ##
@@ -137,15 +141,23 @@ module Tweelings
 
       ##
       # Updates the rows corresponding to the specified object.
-      # @param [Object] object the object to update
+      # @param objects* [Object] the object to update
       # @returns [true, false] whether the request succeeded or not
       ##
-      def update(object)
+      def update(*objects)
         req = REQUESTS[:update]
 
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
-          db.prepare(req) { |stmt| stmt.execute(to_row(object)) }
+          db.prepare(req) do |stmt|
+            objects.each do |object|
+              begin
+                stmt.execute(to_row(object))
+              rescue SQLite3::ConstraintException => e
+                puts "[Info][DatabaseSQLiteCRUD::update] Did not update tweet because of constraint"
+              end
+            end
+          end
         rescue SQLite3::SQLException => e
           # @todo Log the exception
           puts "[Error][DatabaseSQLiteCRUD::update] SQLException::Error code #{e.code}"

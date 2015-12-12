@@ -47,7 +47,7 @@ module Tweelings
           theme:        criteria.theme,
           author:       tweet.user.screen_name,
           text:         tweet.text,
-          date:         tweet.created_at,
+          date:         tweet.created_at.to_s,
           criteria:     criteria.to_req,
           verified:     false
         )

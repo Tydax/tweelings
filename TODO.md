@@ -5,9 +5,6 @@
 * Implémenter la gestion d'erreurs
 * Régler le problème de TooManyRequests (aperçu une solution au problème qui serait lié à la biliothèque…)
 
-## Database
-* Incorporer l’utilisation des classes pour SQLite3 dans le core
-
 ## Algorithmes
 * Réusiner la classe Algorithm pour n’utiliser que des objets Tweelings et non pas un mélange de String et de Tweeling (plus cohérent) (cela impactera le core)
 * Implémentation de l’algorithme de classification bayésienne
