@@ -51,8 +51,13 @@ module Tweelings
         JSON.generate(res)
       end
 
-      def self.annotate_tweets
-        result = Tweelings::TweelingsCore::Core.annotate_tweets
+      def self.annotate_tweets(params)
+        # Check for params
+        if params == nil || params == "{}"
+            return JSON.generate(:code => CODE_NO_PARAMS)
+        end
+
+        result = Tweelings::TweelingsCore::Core.annotate_tweets(params["algorithm"])
         # binding.pry
         result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
         puts "[AjaxView] anotate_tweets:: Response sent"

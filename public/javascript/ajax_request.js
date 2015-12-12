@@ -59,10 +59,9 @@ function cleanTweets() {
 }
 
 function annotateTweets() {
-    var algorithm = document.getElementsByName("algorithm")[0].value;
-    console.log(algorithm);
+    var algorithmSelect = document.getElementsByName("algorithm")[0]
     var parameters = {
-        algorithm
+        algorithm: algorithmSelect.value
     }
     sendRequest("POST", "/annotate_tweets", parameters, function(response) {
         var result = JSON.parse(response);
@@ -98,11 +97,8 @@ function annotateTweets() {
 
 function anotateTweetsManually() {
     hideNotifications();
-    var parameters = {
-        tweets
-    }
     lockForm(true);
-    sendRequest("POST", "/anotate_tweets_manually", parameters, function(response) {
+    sendRequest("POST", "/anotate_tweets_manually", tweets, function(response) {
         var result = JSON.parse(response);
         if (result.code == 0) {
             console.log("Annotated " + result.result + " tweets!");

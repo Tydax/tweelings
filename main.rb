@@ -50,8 +50,10 @@ get '/clean_tweets' do
 end
 
 post '/annotate_tweets' do
+  content_type :json
   if request.post?
-    Tweelings::View::AjaxView.annotate_tweets  
+    parsedParams = JSON.parse(request.body.read)
+    Tweelings::View::AjaxView.annotate_tweets(parsedParams)
   else
     "Hey, what did you, 'spect"
     # TODO: redirect to an error page
@@ -59,8 +61,10 @@ post '/annotate_tweets' do
 end
 
 post '/anotate_tweets_manually' do
+  content_type :json
   if request.post?
-    Tweelings::View::AjaxView.anotate_tweets_manually 
+    parsedParams = JSON.parse(request.body.read)
+    Tweelings::View::AjaxView.anotate_tweets_manually(parsedParams)
   else
     "Hey, what did you, 'spect"
     # TODO: redirect to an error page

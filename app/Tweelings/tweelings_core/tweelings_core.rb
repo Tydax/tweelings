@@ -26,9 +26,17 @@ module Tweelings
         DATABASE.update(*cache)
       end
 
-      def self.annotate_tweets
+      def self.annotate_tweets(algorithm)
         cache = DATABASE.fetch(*@@indexes)
-        cache.each { |tweeling| tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text) }
+
+        if algorithm == "Lexique"
+          cache.each { |tweeling| tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text) }
+        elsif algorithm == "KNN"
+          cache.each { |tweeling| tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(text, base, neighbours) }
+        else
+          # ERROR
+        end
+
         DATABASE.update(*cache)
         # @todo delete this line
         DATABASE.delete(*@@indexes)
