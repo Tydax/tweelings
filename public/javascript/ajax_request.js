@@ -107,6 +107,7 @@ function anotateTweets() {
 }
 
 function anotateTweetsManually() {
+    console.log(tweets);
     var parameters = {
         tweets
     }

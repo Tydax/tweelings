@@ -115,22 +115,17 @@ h1 {
 .stats {
     display: inline-block;
     font-size: 14px;
-    line-height: 3em;
-}
-
-#smiley {
-    width: 3em;
 }
 
 #smiley img {
     max-width: 3em;
-    vertical-align: middle;
     width: 80%;
 }
 
 #feelings-bar {
     color: black;
     font-size: 14px;
+    margin-bottom: 10px;
     text-align: center;
     width: calc(100% - 3em);
 }
@@ -141,21 +136,24 @@ h1 {
 }
 
 #good {
-    background-color: green;
+    background-color: #daffcc;
     border-radius: 5px 0 0 5px;
-    color: green;
+    color: #daffcc;
+    height: 34px;
 }
 
 #neutral {
-    background-color: silver;
+    background-color: #f0f0f5;
     border-radius: 0 0 0 0;
-    color: silver;
+    color: #f0f0f5;
+    height: 34px;
 }
 
 #bad {
-    background-color: red;
+    background-color: #ffcccc;
     border-radius: 0 5px 5px 0;
-    color: red;
+    color: #ffcccc;
+    height: 34px;
 }
 
 #legend div {
@@ -163,24 +161,24 @@ h1 {
 }
 
 #good_color {
-    background-color: green;
-    color: green;
+    background-color: #daffcc;
+    color: #daffcc;
     width: 20px;
     vertical-align: middle;
     height: 20px;
 }
 
 #neutral_color {
-    background-color: silver;
-    color: silver;
+    background-color: #f0f0f5;
+    color: #f0f0f5;
     width: 20px;
     vertical-align: middle;
     height: 20px;
 }
 
 #bad_color {
-    background-color: red;
-    color: red;
+    background-color: #ffcccc;
+    color: #ffcccc;
     width: 20px;
     vertical-align: middle;
     height: 20px;
