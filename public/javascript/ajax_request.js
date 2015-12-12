@@ -92,7 +92,7 @@ function annotateTweets() {
 }
 
 function anotateTweetsManually() {
-    console.log(tweets);
+    hideNotifications();
     var parameters = {
         tweets
     }

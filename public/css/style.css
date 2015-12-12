@@ -53,11 +53,19 @@ h1 {
 
 #error {
     border: 1px solid #a53337;
-    background-color: #ffb5b7;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 0.2em 0 rgba(255,255,255,0.6);
     color: #a53337;
-    margin-top: 12px;
-    padding: 0.05em 6px;
-    width: 57%;
+    margin: auto;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 60%;
+}
+
+#error p {
+    margin: 0;
+    padding: 8px;
 }
 
 #notifications {
@@ -136,23 +144,20 @@ h1 {
 }
 
 #good {
-    background-color: #daffcc;
+    background-color: #b3e5b3;
     border-radius: 5px 0 0 5px;
-    color: #daffcc;
     height: 34px;
 }
 
 #neutral {
-    background-color: #f0f0f5;
+    background-color: #e6e6e6;
     border-radius: 0 0 0 0;
-    color: #f0f0f5;
     height: 34px;
 }
 
 #bad {
-    background-color: #ffcccc;
+    background-color: #ff9999;
     border-radius: 0 5px 5px 0;
-    color: #ffcccc;
     height: 34px;
 }
 
@@ -161,24 +166,21 @@ h1 {
 }
 
 #good_color {
-    background-color: #daffcc;
-    color: #daffcc;
+    background-color: #b3e5b3;
     width: 20px;
     vertical-align: middle;
     height: 20px;
 }
 
 #neutral_color {
-    background-color: #f0f0f5;
-    color: #f0f0f5;
+    background-color: #e6e6e6;
     width: 20px;
     vertical-align: middle;
     height: 20px;
 }
 
 #bad_color {
-    background-color: #ffcccc;
-    color: #ffcccc;
+    background-color: #ff9999;
     width: 20px;
     vertical-align: middle;
     height: 20px;
@@ -240,7 +242,7 @@ h1 {
 }
 
 .tweet_good {
-    background-color: #daffcc; 
+    background-color: #d9f2d9; 
 }
 
 .tweet_neutral {

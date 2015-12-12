@@ -67,6 +67,7 @@ function notationChange(tweetNode, id) {
 
 function saveNotification() {
     var notifications = document.getElementById("notifications");
+    notifications.innerHTML = "";
     var notification = document.createElement("p");
     var textNode = document.createTextNode("You can save the tweets annotation");
     var button = document.createElement("button");
@@ -85,6 +86,7 @@ function saveNotification() {
 
 function addNotification(text) {
     var notifications = document.getElementById("notifications");
+    notifications.innerHTML = "";
     var notification = document.createElement("p");
     var textNode = document.createTextNode(text);
 
@@ -92,6 +94,11 @@ function addNotification(text) {
     notifications.appendChild(notification);
 
     showNotification(true);
+}
+
+function hideNotifications() {
+    notificationsNode = document.getElementById("notifications");
+    notificationsNode.className = "invisible";
 }
 
 /*
@@ -110,18 +117,18 @@ function lockForm(locked) {
  *
  * message: the message to display.
  */
-function displayError(code, message) {
+function displayError(message) {
     var errorNode = document.getElementById("error");
     var pNode = errorNode.getElementsByTagName("p")[0];
     pNode.removeChild(pNode.childNodes[0]);
     var textNode = document.createTextNode(message);
     pNode.appendChild(textNode);
-    errorNode.className = "bloc";
+    errorNode.className = "";
 }
 
 function hideError() {
     errorNode = document.getElementById("error");
-    errorNode.className += " invisible";
+    errorNode.className = "invisible";
 }
 
 function showNotification(invisible) {
