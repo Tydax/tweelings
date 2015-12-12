@@ -1,4 +1,4 @@
-function createTweetElement(tweet) {
+function createTweetElement(tweet, id) {
     var tweetNode = document.createElement("li"),
         pNode = document.createElement("p"),
         notationNode = document.createElement("p"),
@@ -19,12 +19,15 @@ function createTweetElement(tweet) {
     switch(tweet.notation) {
         case 0:
             notationList.selectedIndex = "2";
+            tweetNode.className = "tweet_bad";
             break;
         case 2:
             notationList.selectedIndex = "1";
+            tweetNode.className = "tweet_neutral";
             break;
         case 4:
             notationList.selectedIndex = "0";
+            tweetNode.className = "tweet_good";
             break;
     }
 
@@ -35,7 +38,60 @@ function createTweetElement(tweet) {
     tweetNode.appendChild(pNode);
     tweetNode.appendChild(notationNode);
 
+    notationList.addEventListener('change', function() { notationChange(tweetNode, id)}, false);
+
     return tweetNode;
+}
+
+function notationChange(tweetNode, id) {
+    var notationList = tweetNode.getElementsByTagName("select")[0];
+    var notation = notationList.options[notationList.selectedIndex].value
+
+    switch(notation) {
+    case "Good":
+        tweetNode.className = "tweet_good";
+        tweets[id].notation = 4;
+        break;
+    case "Neutral":
+        tweetNode.className = "tweet_neutral";
+        tweets[id].notation = 2;
+        break;
+    case "Bad":
+        tweetNode.className = "tweet_bad";
+        tweets[id].notation = 0;
+        break;
+    }
+
+    saveNotification();
+}
+
+function saveNotification() {
+    var notifications = document.getElementById("notifications");
+    var notification = document.createElement("p");
+    var textNode = document.createTextNode("You can save the tweets annotation");
+    var button = document.createElement("button");
+    var textButtonNode = document.createTextNode("Save");
+    button.id = "button_save";
+
+    button.addEventListener('click', function() { anotateTweetsManually()}, false);
+
+    button.appendChild(textButtonNode);
+    notification.appendChild(textNode);
+    notification.appendChild(button);
+    notifications.appendChild(notification);
+
+    showNotification(true);
+}
+
+function addNotification(text) {
+    var notifications = document.getElementById("notifications");
+    var notification = document.createElement("p");
+    var textNode = document.createTextNode(text);
+
+    notification.appendChild(textNode);
+    notifications.appendChild(notification);
+
+    showNotification(true);
 }
 
 /*
@@ -64,7 +120,17 @@ function displayError(code, message) {
 }
 
 function hideError() {
+    errorNode = document.getElementById("error");
     errorNode.className += " invisible";
+}
+
+function showNotification(invisible) {
+    notificationsNode = document.getElementById("notifications");
+    if(invisible) {
+        notificationsNode.className = "";
+    } else {
+        notificationsNode.className = "invisible";
+    }
 }
 
 function updateFeelings(good, neutral, bad) {
@@ -118,10 +184,8 @@ function updateTweetList(tweets) {
         tweetListNode.removeChild(tweetListNode.lastChild);
     }
 
-    console.log(tweets);
-
     for (var i = 0; i < tweets.length; i++) {
-        tweetNode = createTweetElement(tweets[i]);
+        tweetNode = createTweetElement(tweets[i], i);
         tweetListNode.appendChild(tweetNode);
     };
 }

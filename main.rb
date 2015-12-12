@@ -58,3 +58,12 @@ post '/anotate_tweets' do
     # TODO: redirect to an error page
   end
 end
+
+post '/anotate_tweets_manually' do
+  if request.post?
+    Tweelings::View::AjaxView.anotate_tweets_manually 
+  else
+    "Hey, what did you, 'spect"
+    # TODO: redirect to an error page
+  end
+end

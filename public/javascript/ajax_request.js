@@ -76,7 +76,7 @@ function cleanTweets() {
 function anotateTweets() {
     sendRequest("POST", "/anotate_tweets", null, function(response) {
         var result = JSON.parse(response);
-        var tweets = [];
+        tweets = [];
         var good = 0;
         var neutral = 0;
         var bad = 0;
@@ -102,6 +102,22 @@ function anotateTweets() {
             lockForm(false);
             updateFeelings(good, neutral, bad);
             updateTweetList(tweets);
+        }
+    });
+}
+
+function anotateTweetsManually() {
+    var parameters = {
+        tweets
+    }
+    lockForm(true);
+    sendRequest("POST", "/anotate_tweets_manually", parameters, function(response) {
+        var result = JSON.parse(response);
+        if (result.code == 0) {
+            console.log("Annotated " + result.result + " tweets!");
+        } else {
+            console.log("Error code: " + result.code);
+            displayError(result.code, result.result);
         }
     });
 }

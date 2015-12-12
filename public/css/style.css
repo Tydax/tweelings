@@ -60,6 +60,39 @@ h1 {
     width: 57%;
 }
 
+#notifications {
+    border: 1px solid #e1e8ed;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 0.2em 0 rgba(255,255,255,0.6);
+    color: #292f33;
+    margin: auto;
+    padding: 0;
+    text-align: center;
+    vertical-align: top;
+    width: 60%;
+}
+
+#notifications p {
+    margin: 0;
+    padding: 8px;
+}
+
+#button_save {
+    background-color: white;
+    border: 1px solid #6165b5;
+    border-radius: 5px;
+    color: #6165b5;
+    margin-left: 1em;
+    padding: 0.5em 1em;
+
+}
+
+#button_save:hover {
+    color: white;
+    border: 1px solid white;
+    background-color: #6165b5;
+}
+
 #result {
     text-align: left;
     width: 57%;
@@ -206,4 +239,16 @@ h1 {
 
 .invisible {
     display: none;
+}
+
+.tweet_good {
+    background-color: #daffcc; 
+}
+
+.tweet_neutral {
+    background-color: #f0f0f5;
+}
+
+.tweet_bad {
+    background-color: #ffcccc;
 }
