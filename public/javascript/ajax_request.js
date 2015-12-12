@@ -59,7 +59,12 @@ function cleanTweets() {
 }
 
 function annotateTweets() {
-    sendRequest("POST", "/annotate_tweets", null, function(response) {
+    var algorithm = document.getElementsByName("algorithm")[0].value;
+    console.log(algorithm);
+    var parameters = {
+        algorithm
+    }
+    sendRequest("POST", "/annotate_tweets", parameters, function(response) {
         var result = JSON.parse(response);
         tweets = [];
         var good = 0;
