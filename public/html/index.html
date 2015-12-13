@@ -34,7 +34,7 @@
                 <div class="stats" id="legend">
                     <div class="score">
                         <div id="good_color"></div>
-                        Good: 
+                        Positive: 
                         <span id="good_score">0</span>
                     </div> 
                     <div class="score">
@@ -44,7 +44,7 @@
                     </div> 
                     <div class="score">
                         <div id="bad_color"></div>
-                        Bad: 
+                        Negative: 
                         <span id="bad_score">0</span>
                     </div>
                 </div>
@@ -63,11 +63,20 @@
                     <input id="search-form-theme" name="theme" type="text" placeholder="Rechercher sur Twitter">
                 </div>
                 <div id="algorithm">
-                    Pick an algorithm: 
+                    Annotate using: 
                     <select name="algorithm">
                         <option>Lexique</option>
                         <option>KNN</option>
                     </select>
+                    with
+                    <select name="knn_nb_neighbours" disabled>
+                        <option>1</option>
+                        <option>5</option>
+                        <option>10</option>
+                        <option>20</option>
+                        <option>50</option>
+                    </select>
+                    neighbours
                 </div>
                 <!-- <div id="proxy">
                     Proxy : 

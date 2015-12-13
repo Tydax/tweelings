@@ -7,7 +7,7 @@ function createTweetElement(tweet, id) {
     var textNode = document.createTextNode(tweet.text),
         authorTextNode = document.createTextNode(tweet.author + ": ");
 
-    var array = ["Good","Neutral","Bad"];
+    var array = ["Positive","Neutral","Negative"];
     var notationList = document.createElement("select");
     for (var i = 0; i < array.length; i++) {
         var option = document.createElement("option");
@@ -72,7 +72,7 @@ function saveNotification() {
         notifications.removeChild(notifications.lastChild);
     }
     var notification = document.createElement("p");
-    var textNode = document.createTextNode("You can save the tweets annotation");
+    var textNode = document.createTextNode("You can now correct all annotations. The verified tweets will be used as a base.");
     var button = document.createElement("button");
     var textButtonNode = document.createTextNode("Save");
     button.id = "button_save";

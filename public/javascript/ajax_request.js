@@ -59,9 +59,10 @@ function cleanTweets() {
 }
 
 function annotateTweets() {
-    var algorithmSelect = document.getElementsByName("algorithm")[0]
     var parameters = {
-        algorithm: algorithmSelect.value
+        algorithm: document.forms["search-tweets"]["algorithm"].value,
+        nb_neighbours: document.forms["search-tweets"]["knn_nb_neighbours"].value
+
     }
     sendRequest("POST", "/annotate_tweets", parameters, function(response) {
         var result = JSON.parse(response);
@@ -88,7 +89,6 @@ function annotateTweets() {
                         break;
                 }
             };
-            lockForm(false);
             updateFeelings(good, neutral, bad);
             updateTweetList(tweets);
         }
@@ -110,7 +110,7 @@ function annotateTweetsManually() {
     var parameters = {
         tweets: params
     }
-    lockForm(true);
+    lockForm(false);
     sendRequest("POST", "/annotate_tweets_manually", parameters, function(response) {
         var result = JSON.parse(response);
         if (result.code == 0) {

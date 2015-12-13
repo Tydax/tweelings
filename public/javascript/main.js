@@ -11,6 +11,15 @@ function appendSubmitEvent() {
     };
 }
 
+function appendKNNEvent() {
+    var form = document.forms["search-form"];
+    var algoNode = form["algorithm"];
+
+    algoNode.addEventListener("change", function(e) {
+        form["knn_nb_neighbours"].disabled = !(algoNode.value == "KNN");
+    }, false);
+}
+
 function check() {
     var form = document.getElementById("search-form-theme");
     if (form.value) {
@@ -22,4 +31,5 @@ function check() {
 
 (function() {
     appendSubmitEvent();
+    appendKNNEvent();
 })();

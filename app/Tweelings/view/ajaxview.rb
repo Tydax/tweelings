@@ -23,7 +23,6 @@ module Tweelings
         
         begin
           result = Tweelings::TweelingsCore::Core.fetch_tweets(criteria)
-          result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
           puts "[AjaxView] fetch_tweets:: Response sent"
           res = {
             :code => CODE_SUCCESS,
@@ -57,8 +56,7 @@ module Tweelings
             return JSON.generate(:code => CODE_NO_PARAMS)
         end
 
-        result = Tweelings::TweelingsCore::Core.annotate_tweets(params["algorithm"])
-        # binding.pry
+        result = Tweelings::TweelingsCore::Core.annotate_tweets(params["algorithm"], params["nb_neighbours"])
         result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
         puts "[AjaxView] anotate_tweets:: Response sent"
         res = {
@@ -74,7 +72,6 @@ module Tweelings
           return JSON.generate(:code => CODE_NO_PARAMS)
         end
 
-        # binding.pry
         tweelings = params["tweets"].each_with_object([]) do |param, arr|
           arr << param.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
         end

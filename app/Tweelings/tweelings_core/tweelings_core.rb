@@ -17,7 +17,7 @@ module Tweelings
         DATABASE.save(*cache)
         # Store indexes saved
         @@indexes = cache.each_with_object([]) { |tweeling, a| a << tweeling.id if tweeling.id }
-        cache
+        cache.size
       end
 
       def self.clean_tweets        
@@ -26,15 +26,21 @@ module Tweelings
         DATABASE.update(*cache)
       end
 
-      def self.annotate_tweets(algorithm)
+      def self.annotate_tweets(algorithm, param)
         cache = DATABASE.fetch(*@@indexes)
 
-        if algorithm == "Lexique"
-          cache.each { |tweeling| tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text) }
-        elsif algorithm == "KNN"
-          cache.each { |tweeling| tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(text, base, neighbours) }
+        case algorithm
+        when "Lexique"
+          cache.each do |tweeling|
+            tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text)
+          end
+        when "KNN"
+          cache.each do |tweeling|
+            base = DATABASE.fetch_verified
+            tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(text, base, param)
+          end
         else
-          # ERROR
+          puts "[Tweelings_Core]["
         end
 
         DATABASE.update(*cache)
@@ -48,7 +54,7 @@ module Tweelings
         # DATABASE.delete(*@@indexes)
       end
 
-      def self.get_base
+      def self.get_base(theme = nil)
         DATABASE.fetch_verified(theme)
       end
     end
