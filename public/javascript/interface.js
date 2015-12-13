@@ -7,7 +7,13 @@ function createTweetElement(tweet, id) {
     var textNode = document.createTextNode(tweet.text),
         authorTextNode = document.createTextNode(tweet.author + ": ");
 
-    var array = ["Positive","Neutral","Negative"];
+    // Generate option list for the tweet (manual annotation)
+    var array = [
+        "Positive",
+        "Neutral",
+        "Negative"
+    ];
+
     var notationList = document.createElement("select");
     for (var i = 0; i < array.length; i++) {
         var option = document.createElement("option");
@@ -38,7 +44,9 @@ function createTweetElement(tweet, id) {
     tweetNode.appendChild(pNode);
     tweetNode.appendChild(notationNode);
 
-    notationList.addEventListener('change', function() { notationChange(tweetNode, id)}, false);
+    notationList.addEventListener('change', function() {
+        notationChange(tweetNode, id);
+    }, false);
 
     return tweetNode;
 }
@@ -48,7 +56,7 @@ function notationChange(tweetNode, id) {
     var notation = notationList.options[notationList.selectedIndex].value
 
     switch(notation) {
-    case "Good":
+    case "Positive":
         tweetNode.className = "tweet_good";
         tweets[id].notation = 4;
         break;
@@ -56,13 +64,11 @@ function notationChange(tweetNode, id) {
         tweetNode.className = "tweet_neutral";
         tweets[id].notation = 2;
         break;
-    case "Bad":
+    case "Negative":
         tweetNode.className = "tweet_bad";
         tweets[id].notation = 0;
         break;
     }
-
-    saveNotification();
 }
 
 function saveNotification() {
@@ -78,7 +84,9 @@ function saveNotification() {
     button.id = "button_save";
 
     button.addEventListener('click', function() {
+        hideNotifications();
         annotateTweetsManually();
+        removeManualAnnotationNodes();
     }, false);
 
     button.appendChild(textButtonNode);
@@ -87,6 +95,19 @@ function saveNotification() {
     notifications.appendChild(notification);
 
     showNotification(true);
+}
+
+/*
+ * Removes all manual annotation nodes.
+ */
+function removeManualAnnotationNodes() {
+    var tweetListNode = document.getElementById("tweet-list");
+    var tweetLiNodes = tweetListNode.getElementsByTagName("li");
+
+    for (var i = 0; i < tweetLiNodes.length; i++) {
+        var selectNode = tweetLiNodes[i].getElementsByTagName("select")[0];
+        selectNode.parentNode.removeChild(selectNode);
+    };
 }
 
 function addNotification(text) {

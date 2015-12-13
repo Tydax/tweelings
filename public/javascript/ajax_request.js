@@ -91,6 +91,7 @@ function annotateTweets() {
             };
             updateFeelings(good, neutral, bad);
             updateTweetList(tweets);
+            saveNotification();
         }
     });
 }
