@@ -67,7 +67,10 @@ function notationChange(tweetNode, id) {
 
 function saveNotification() {
     var notifications = document.getElementById("notifications");
-    notifications.innerHTML = "";
+    // Clean node
+    while (notifications.lastChild) {
+        notifications.removeChild(notifications.lastChild);
+    }
     var notification = document.createElement("p");
     var textNode = document.createTextNode("You can save the tweets annotation");
     var button = document.createElement("button");
@@ -86,7 +89,10 @@ function saveNotification() {
 
 function addNotification(text) {
     var notifications = document.getElementById("notifications");
-    notifications.innerHTML = "";
+    // Clean node
+    while (notifications.lastChild) {
+        notifications.removeChild(notifications.lastChild);
+    }
     var notification = document.createElement("p");
     var textNode = document.createTextNode(text);
 
@@ -160,9 +166,9 @@ function updateFeelings(good, neutral, bad) {
     neutralBar.style.width = neutralRate + "%";
     badBar.style.width = badRate + "%";
 
-    goodScore.innerHTML = Math.round(goodRate) + "%";
-    neutralScore.innerHTML = Math.round(neutralRate) + "%";
-    badScore.innerHTML = Math.round(badRate) + "%";
+    updateScoreNode(goodScore, goodRate);
+    updateScoreNode(neutralScore, neutralRate);
+    updateScoreNode(badScore, badRate);
 
     var score = goodRate - badRate;
     if(score > 0) {
@@ -176,6 +182,21 @@ function updateFeelings(good, neutral, bad) {
     }
 
     statsNode.className = "";
+}
+
+/*
+ * Update the score node by cleaning and writing the new node.
+ * node: the score node to update
+ * score: the score value
+ */
+function updateScoreNode(node, rate) {
+    // Clean node
+    while (node.lastChild) {
+        node.removeChild(node.lastChild);
+    }
+
+    var textNode = document.createTextNode(Math.round(rate) + "%");
+    node.appendChild(textNode);
 }
 
 /*

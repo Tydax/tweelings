@@ -5,16 +5,15 @@ function appendSubmitEvent() {
     		hideError();
         	fetchTweets();
     	} else {
-    		displayError("The search field is empty.");
+    		displayError("Hey! You should write something in the search field!");
     	}
         return false;
     };
-    console.log("Appended submit event");
 }
 
 function check() {
     var form = document.getElementById("search-form-theme");
-    if(form.value) {
+    if (form.value) {
     	return true;
     } else {
     	return false;	
