@@ -38,9 +38,18 @@ module Tweelings
         end
 
         DATABASE.update(*cache)
-        # @todo delete this line
-        DATABASE.delete(*@@indexes)
         cache
+      end
+
+      def self.update_tweets(hashes)
+        hashes.each { |hash| hash[:verified] = true }
+        DATABASE.update_annotation(*hashes)
+        # @todo delete this line
+        # DATABASE.delete(*@@indexes)
+      end
+
+      def self.get_base
+        DATABASE.fetch_verified(theme)
       end
     end
   end

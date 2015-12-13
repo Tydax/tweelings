@@ -18,6 +18,10 @@ module Tweelings
                     :notation,
                     :verified
 
+      NEGATIVE  = 0
+      NEUTRAL   = 2
+      POSITIVE  = 4
+
       ##
       # Initialises a new tweeling using the specified parameters.
       #

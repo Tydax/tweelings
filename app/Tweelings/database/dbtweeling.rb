@@ -33,6 +33,8 @@ module Tweelings
 
         REQUESTS[:fetch_uncleaned] = REQUESTS[:fetch] % "WHERE cleaned_text IS NULL %s"
         REQUESTS[:fetch_unverified] = REQUESTS[:fetch] % "WHERE verified = '0' %s"
+        REQUESTS[:fetch_verified] = REQUESTS[:fetch] % "WHERE verified = '1' %s"
+        REQUESTS[:update_annotation] = "UPDATE #{TABLE} SET notation = :notation, verified = :verified WHERE #{ID} = :id;"
 
         begin
           file = File.open(SQL_PATH, "rb")
@@ -119,7 +121,7 @@ module Tweelings
       end
 
       ##
-      # Fetches the unverified tweelings correspond to the theme if specified.
+      # Fetches the unverified tweelings corresponding to the theme if specified.
       #
       # @param theme [String] the theme to fetch (optional)
       # @returns [Array<Object>, nil] an array containing the converted fetched object(s) using #from_row,
@@ -131,6 +133,18 @@ module Tweelings
       end
 
       ##
+      # Fetches the verified tweelings corresponding to the theme if specified.
+      #
+      # @param theme [String] the theme to fetch (optional)
+      # @returns [Array<Object>, nil] an array contaning the converted fetched object(s) using #from_row,
+      #   or nil if the request failed
+      ##
+      def fetch_verified(theme = nil)
+        req = REQUESTS[:fetch_verified] % (theme ? "AND theme = ?" : "")
+        basis_fetch(req, theme)
+      end
+
+      ##
       # Converts the row into a [Tweelings::Object::Tweeling] instance.
       #
       # @param row [Hash] the row to transform
@@ -138,6 +152,36 @@ module Tweelings
       ##
       def from_row(row)
         Tweelings::Object::Tweeling.new(super(row))
+      end
+
+      ##
+      # Update the annotation of the specified tweelings.
+      #
+      # @param *objects [Array<Tweelings::Object::Tweeling>] the tweelings to update
+      # @returns [true, false] whether the request succeeded or not
+      ##
+      def update_annotation(*objects)
+        req = REQUESTS[:update_annotation]
+
+        begin
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.prepare(req) do |stmt|
+            objects.each do |object|
+              begin
+                stmt.execute(to_row(object))
+              rescue SQLite3::ConstraintException => e
+                puts "[Info][DBTweeling::update_annotation] Did not update tweet because of constraint #{e.code}"
+              end
+            end
+          end
+          true
+        rescue SQLite3::SQLException => e
+          # @todo Log the exception
+          puts "[Error][DBTweeling::update_annotation] SQLException::Error code #{e.code}"
+          false
+        ensure
+          db.close unless db.closed? if db
+        end
       end
 
       private :basic_fetch

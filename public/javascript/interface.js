@@ -77,7 +77,9 @@ function saveNotification() {
     var textButtonNode = document.createTextNode("Save");
     button.id = "button_save";
 
-    button.addEventListener('click', function() { anotateTweetsManually()}, false);
+    button.addEventListener('click', function() {
+        annotateTweetsManually();
+    }, false);
 
     button.appendChild(textButtonNode);
     notification.appendChild(textNode);

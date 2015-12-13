@@ -114,6 +114,25 @@ module Tweelings
         # Get the most occurring notation in the close neighbours 
         close_neighbours.each { |e|  e.notation }.group_by(&:itself).values.max_by(&:size).first
       end
+
+      def self.annotate_using_bayes(tweelings, base)
+        neg = base.count { |tweel| tweel.notation == 0 }
+        neu = base.count { |tweel| tweel.notation == 2 }
+        pos = base.count { |tweel| tweel.notation == 4 }
+
+        tweelings.each do |tweeling|
+          probaneg = neg
+          text = tweeling.split(' ')
+
+        end
+      end
+
+      def get_word_occurences(text)
+        text.inject({}) do |word, hash|
+          hash[word.to_sym] += 1
+          hash
+        end
+      end
     end
   end
 end

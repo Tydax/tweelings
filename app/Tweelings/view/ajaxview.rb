@@ -69,15 +69,22 @@ module Tweelings
         JSON.generate(res)
       end
 
-      def self.send_tweets
-        result = Tweelings::TweelingsCore::Core.convert_tweets
-        result.map! { |tweeling| JSON.generate(tweeling.to_h_for_json) }
-        puts "[AjaxView] save_tweets:: Response sent"
-        #binding.pry
+      def self.update_tweets(params)
+        if !params || params == "{}"
+          return JSON.generate(:code => CODE_NO_PARAMS)
+        end
+
+        # binding.pry
+        tweelings = params["tweets"].each_with_object([]) do |param, arr|
+          arr << param.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
+        end
+
+        result = Tweelings::TweelingsCore::Core.update_tweets(tweelings)
+
         res = {
-              :code => CODE_SUCCESS,
-              :result => result
-            }
+          :code => CODE_SUCCESS,
+          :result => result
+        }
 
         JSON.generate(res)
       end

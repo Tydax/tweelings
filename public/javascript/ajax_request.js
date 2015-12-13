@@ -74,7 +74,7 @@ function annotateTweets() {
             for (var i = 0; i < result.result.length; i++) {
                 tweets.push(JSON.parse(result.result[i]));
             };
-            console.log("Anotated " + result.result.length + " tweets!");
+            console.log("Annotated " + result.result.length + " tweets!");
             for (var i = 0; i < tweets.length; i++) {
                 switch(tweets[i].notation){
                     case 0:
@@ -95,13 +95,26 @@ function annotateTweets() {
     });
 }
 
-function anotateTweetsManually() {
-    hideNotifications();
+function annotateTweetsManually() {
+    var params = [];
+    console.log(tweets);
+
+    for (var i = 0; i < tweets.length; i++) {
+        params.push({
+            id: tweets[i].id,
+            notation: tweets[i].notation
+        });
+    }
+
+    console.log(params);
+    var parameters = {
+        tweets: params
+    }
     lockForm(true);
-    sendRequest("POST", "/anotate_tweets_manually", tweets, function(response) {
+    sendRequest("POST", "/annotate_tweets_manually", parameters, function(response) {
         var result = JSON.parse(response);
         if (result.code == 0) {
-            console.log("Annotated " + result.result + " tweets!");
+            console.log("Updated tweets!");
         } else {
             console.log("Error code: " + result.code);
             displayError(result.code, result.result);

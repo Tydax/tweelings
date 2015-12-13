@@ -158,6 +158,7 @@ module Tweelings
               end
             end
           end
+          true
         rescue SQLite3::SQLException => e
           # @todo Log the exception
           puts "[Error][DatabaseSQLiteCRUD::update] SQLException::Error code #{e.code}"
