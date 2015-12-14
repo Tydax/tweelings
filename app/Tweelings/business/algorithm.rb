@@ -40,18 +40,16 @@ module Tweelings
       #
       # @param [String] text the text to evaluate
       # @return [Integer] a number representing the annotation
-      #   * 0 = negative
-      #   * 2 = neutral
-      #   * 4 = positive
+      # #see
       ##
       def self.annotate_using_keywords(text)
         splitted_text = text.split(' ')
         avg = (splitted_text - LEX_NEGATIVE).length - (splitted_text - LEX_POSITIVE).length
 
         case 
-        when avg >  0 then 4
-        when avg == 0 then 2
-        else               0
+        when avg >  0 then Tweelings::Object::Tweeling::POSITIVE
+        when avg == 0 then Tweelings::Object::Tweeling::NEUTRAL
+        else               Tweelings::Object::Tweeling::NEGATIVE
         end
       end
 
@@ -116,22 +114,68 @@ module Tweelings
       end
 
       def self.annotate_using_bayes(tweelings, base)
-        neg = base.count { |tweel| tweel.notation == 0 }
-        neu = base.count { |tweel| tweel.notation == 2 }
-        pos = base.count { |tweel| tweel.notation == 4 }
+        neg_base = base.select { |tweel| tweel.notation == Tweelings::Object::Tweeling::NEGATIVE }
+        neu_base = base.select { |tweel| tweel.notation == Tweelings::Object::Tweeling::NEUTRAL }
+        pos_base = base.select { |tweel| tweel.notation == Tweelings::Object::Tweeling::POSITIVE }
+
+        neg_occ = get_word_occurrences(*neg_base)
+        neu_occ = get_word_occurrences(*neu_base)
+        pos_occ = get_word_occurrences(*pos_base)
+
+        base_occ = get_word_occurrences(*base)
 
         tweelings.each do |tweeling|
-          probaneg = neg
-          text = tweeling.split(' ')
-
+          prob = {}
+          prob[Tweelings::Object::Tweeling::NEGATIVE] = predict_text_notation(tweeling.text, neg_occ, base_occ)
+          prob[Tweelings::Object::Tweeling::NEUTRAL] = predict_text_notation(tweeling.text, neu_occ, base_occ)
+          prob[Tweelings::Object::Tweeling::POSITIVE] = predict_text_notation(tweeling.text, pos_occ, base_occ)
+        
+          tweeling.notation = prob.max_by { |k, v| v }
         end
       end
 
-      def get_word_occurences(text)
-        text.inject({}) do |word, hash|
-          hash[word.to_sym] += 1
-          hash
+      def self.get_word_occurrences(*tweelings)
+        texts = tweelings.map { |tweeling|  tweeling.text.split(' ')}
+        texts.inject(Hash.new(0)) do |mainhash, text|
+          onehash = text.inject(Hash.new(0)) do |hash, word|
+            hash[word] += 1
+            hash
+          end
+
+          mainhash.merge(onehash) { |_, val1, val2| val1 + val2 }
         end
+      end
+
+      ##
+      # Predicts the probability of a word to belong to a notation
+      #   using the specified occurrences.
+      #
+      # @param word [String] the word to use to predict
+      # @param pol_occ [Hash<String, Integer>] the occurences of words in a text of the wanted notation
+      # @param base_occ [Hash<String, Integer>] the occurences of words in every text of the base
+      # @return [Double] the probability
+      ##
+      def self.predict_word_notation(word, pol_occ, base_occ)
+        # n(m, c) + 1
+        nmc = pol_occ[word] + 1.0
+        # N
+        n = base_occ.inject(0.0) { |acc, (k, v)| acc + v }
+        # n(c)+ N
+        ncn = pol_occ.inject(n) { |acc, (k, v)| acc + v }
+        # (n(m, c) + 1) / (n(c) + N)
+        nmc / ncn
+      end
+
+      ##
+      # Predicts the probability of a text to belong to a notation
+      #   using the specified occurrence.
+      #
+      # @param text [String] the text to use to predict
+      # @param pol_occ [Hash<String, Integer>] the occurences of words in a text of the wanted notation
+      # @param base_occ [Hash<String, Integer>] the occurences of words in every text of the base
+      # @return [Double] the probability
+      def self.predict_text_notation(text, pol_occ, base_occ)
+        text.split(' ').inject(1.0) { |proba, word| proba * predict_word_notation(word, pol_occ, base_occ) }
       end
     end
   end

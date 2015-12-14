@@ -2,7 +2,9 @@ module Tweelings
   module TweelingsCore
     module Core
 
-      TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
+      # Dummy mode
+      # TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
+      TWITTER_CLIENT = Tweelings::Client::TwitterREST.new('config/app_config.yaml')
       DATABASE = Tweelings::Database::DBTweeling.new
 
       ##
@@ -37,7 +39,8 @@ module Tweelings
             tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(text, base, param)
           end
         else
-          puts "[Tweelings_Core]["
+          puts "[Tweelings_Core][Error] Invalid value for algorithm, skipping."
+          return nil
         end
 
         Array.new(@@cache)
