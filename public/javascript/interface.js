@@ -55,20 +55,37 @@ function notationChange(tweetNode, id) {
     var notationList = tweetNode.getElementsByTagName("select")[0];
     var notation = notationList.options[notationList.selectedIndex].value
 
+    switch(tweets[id].notation) {
+    case 4:
+        good--;
+        break;
+    case 2:
+        neutral--;
+        break;
+    case 0:
+        bad--;
+        break;
+    }
+
     switch(notation) {
     case "Positive":
         tweetNode.className = "tweet_good";
         tweets[id].notation = 4;
+        good++;
         break;
     case "Neutral":
         tweetNode.className = "tweet_neutral";
         tweets[id].notation = 2;
+        neutral++;
         break;
     case "Negative":
         tweetNode.className = "tweet_bad";
         tweets[id].notation = 0;
+        bad++;
         break;
     }
+
+    updateFeelings(good, neutral, bad);
 }
 
 function saveNotification() {

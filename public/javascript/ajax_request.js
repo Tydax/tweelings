@@ -67,9 +67,9 @@ function annotateTweets() {
     sendRequest("POST", "/annotate_tweets", parameters, function(response) {
         var result = JSON.parse(response);
         tweets = [];
-        var good = 0;
-        var neutral = 0;
-        var bad = 0;
+        good = 0;
+        neutral = 0;
+        bad = 0;
         
         if (result.code == 0) {
             for (var i = 0; i < result.result.length; i++) {
