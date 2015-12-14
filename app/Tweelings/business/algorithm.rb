@@ -130,7 +130,7 @@ module Tweelings
           prob[Tweelings::Object::Tweeling::NEUTRAL] = predict_text_notation(tweeling.text, neu_occ, base_occ)
           prob[Tweelings::Object::Tweeling::POSITIVE] = predict_text_notation(tweeling.text, pos_occ, base_occ)
         
-          tweeling.notation = prob.max_by { |k, v| v }
+          tweeling.notation = prob.max_by { |k, v| v }.first
         end
       end
 

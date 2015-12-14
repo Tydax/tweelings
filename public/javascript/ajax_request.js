@@ -76,7 +76,6 @@ function annotateTweets() {
                 tweets.push(JSON.parse(result.result[i]));
             };
             console.log("Annotated " + result.result.length + " tweets!");
-            console.log(tweets);
             for (var i = 0; i < tweets.length; i++) {
                 switch(tweets[i].notation){
                     case 0:
