@@ -84,9 +84,9 @@ function saveNotification() {
     button.id = "button_save";
 
     button.addEventListener('click', function() {
-        hideNotifications();
+        //hideNotifications();
         annotateTweetsManually();
-        removeManualAnnotationNodes();
+        //removeManualAnnotationNodes();
     }, false);
 
     button.appendChild(textButtonNode);

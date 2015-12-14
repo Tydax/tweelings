@@ -98,7 +98,7 @@ function annotateTweets() {
 
 function annotateTweetsManually() {
     var params = [];
-    console.log(tweets);
+    console.log(tweets[0]);
 
     for (var i = 0; i < tweets.length; i++) {
         params.push({
@@ -107,7 +107,6 @@ function annotateTweetsManually() {
         });
     }
 
-    console.log(params);
     var parameters = {
         tweets: params
     }

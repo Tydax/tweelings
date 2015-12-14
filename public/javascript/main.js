@@ -16,6 +16,11 @@ function appendKNNEvent() {
     var algoNode = form["algorithm"];
 
     algoNode.addEventListener("change", function(e) {
+        if(algoNode.value == "KNN") {
+            document.getElementById("neighbours").className = "";
+        } else {
+            document.getElementById("neighbours").className = "invisible";
+        }
         form["knn_nb_neighbours"].disabled = !(algoNode.value == "KNN");
     }, false);
 }

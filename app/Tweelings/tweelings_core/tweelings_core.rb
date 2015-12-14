@@ -49,7 +49,18 @@ module Tweelings
           tweet.notation = hash[:notation]
           tweet.verified = true
         end
-        DATABASE.save(*@@cache)
+
+        cache_temp = []
+        @@cache.each do |tweet|
+          cache_temp << Tweelings::Object::Tweeling.new(tweet.to_h)
+        end
+
+        cache_temp.each do |tweet_temp|
+          tweet_temp.id = nil
+        end
+
+        DATABASE.save(*cache_temp)
+        DATABASE.update_annotation(*cache_temp.select { |tweeling| !tweeling.id })
       end
 
       def self.get_base(theme = nil)

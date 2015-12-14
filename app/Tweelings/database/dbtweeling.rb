@@ -163,10 +163,19 @@ module Tweelings
       def update_annotation(*objects)
         req = REQUESTS[:update_annotation]
 
+        params = objects.inject([]) do |acc, obj|
+          hash = {
+            id: obj.id,
+            notation: obj.notation,
+            verified: obj.verified
+          }
+          acc << hash
+        end
+
         begin
           db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
           db.prepare(req) do |stmt|
-            objects.each do |object|
+            params.each do |object|
               begin
                 stmt.execute(to_row(object))
               rescue SQLite3::ConstraintException => e
@@ -182,6 +191,36 @@ module Tweelings
         ensure
           db.close unless db.closed? if db
         end
+      end
+
+      ##
+      # Retrieves all the rows.
+      #
+      # @param *indexes [Integer] the indexes of the row to fetch
+      #   if empty, all rows will be fetched
+      # @returns [Array<Object>, nil] an array of the rows converted to objects
+      #   or nil if an exception occured.
+      ##
+      def fetch_id_twitter(*indexes)
+        req = REQUESTS[:fetch] % "WHERE #{@id_twitter} IN(%s)" % Array.new(indexes.size, '?').join(', ')
+
+        res = []
+        begin
+          db = SQLite3::Database.new(DB_PATH, DB_OPTIONS)
+          db.prepare(req) do |stmt|
+            stmt.execute(indexes) do |results|
+              results.each_hash { |row| res << from_row(row) }
+            end
+          end
+        rescue SQLite3::SQLException => e
+          # @todo Log the exception
+          puts "[Error][DatabaseSQLiteCRUD::fetch] SQLException::Error code #{e.code}"
+          res = nil
+        ensure
+          db.close unless db.closed? if db
+        end
+
+        res
       end
 
       private :basic_fetch
