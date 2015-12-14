@@ -3,8 +3,8 @@ module Tweelings
     module Core
 
       # Dummy mode
-      TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
-      # TWITTER_CLIENT = Tweelings::Client::TwitterREST.new('config/app_config.yaml')
+      #TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
+      TWITTER_CLIENT = Tweelings::Client::TwitterREST.new('config/app_config.yaml')
       DATABASE = Tweelings::Database::DBTweeling.new
 
       ##

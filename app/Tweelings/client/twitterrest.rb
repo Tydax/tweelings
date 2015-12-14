@@ -61,6 +61,7 @@ module Tweelings
           raise error
         end
 
+        tweets.attrs[:search_metadata][:next_results] = nil
         # Take a certain number of tweets if indicated a limit
         criteria.number ? tweets.take(criteria.number).to_a : tweets.to_a
       end
