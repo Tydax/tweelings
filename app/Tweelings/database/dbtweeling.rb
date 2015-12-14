@@ -34,7 +34,7 @@ module Tweelings
         REQUESTS[:fetch_uncleaned] = REQUESTS[:fetch] % "WHERE cleaned_text IS NULL %s"
         REQUESTS[:fetch_unverified] = REQUESTS[:fetch] % "WHERE verified = '0' %s"
         REQUESTS[:fetch_verified] = REQUESTS[:fetch] % "WHERE verified = '1' %s"
-        REQUESTS[:update_annotation] = "UPDATE #{TABLE} SET notation = :notation, verified = :verified WHERE #{ID} = :id;"
+        REQUESTS[:update_annotation] = "UPDATE #{TABLE} SET notation = :notation, verified = :verified WHERE id_twitter = :id_twitter;"
 
         begin
           file = File.open(SQL_PATH, "rb")
@@ -141,7 +141,7 @@ module Tweelings
       ##
       def fetch_verified(theme = nil)
         req = REQUESTS[:fetch_verified] % (theme ? "AND theme = ?" : "")
-        basis_fetch(req, theme)
+        basic_fetch(req, theme)
       end
 
       ##
@@ -165,7 +165,7 @@ module Tweelings
 
         params = objects.inject([]) do |acc, obj|
           hash = {
-            id: obj.id,
+            id_twitter: obj.id_twitter,
             notation: obj.notation,
             verified: obj.verified
           }

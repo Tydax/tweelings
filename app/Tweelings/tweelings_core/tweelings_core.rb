@@ -3,8 +3,8 @@ module Tweelings
     module Core
 
       # Dummy mode
-      # TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
-      TWITTER_CLIENT = Tweelings::Client::TwitterREST.new('config/app_config.yaml')
+      TWITTER_CLIENT = Tweelings::Client::DummyTwitter.new('data/sncf.yaml')
+      # TWITTER_CLIENT = Tweelings::Client::TwitterREST.new('config/app_config.yaml')
       DATABASE = Tweelings::Database::DBTweeling.new
 
       ##
@@ -36,8 +36,11 @@ module Tweelings
         when "KNN"
           @@cache.each do |tweeling|
             base = DATABASE.fetch_verified
-            tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(text, base, param)
+            tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(tweeling.text, base, Integer(param))
           end
+        when "Bayes"
+          base = DATABASE.fetch_verified
+          Tweelings::Business::Algorithm.annotate_using_bayes(@@cache, base)
         else
           puts "[Tweelings_Core][Error] Invalid value for algorithm, skipping."
           return nil

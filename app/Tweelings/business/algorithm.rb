@@ -110,7 +110,7 @@ module Tweelings
         end
 
         # Get the most occurring notation in the close neighbours 
-        close_neighbours.each { |e|  e.notation }.group_by(&:itself).values.max_by(&:size).first
+        close_neighbours.each { |e|  e.notation }.group_by(&:itself).values.max_by(&:size).first.notation
       end
 
       def self.annotate_using_bayes(tweelings, base)
