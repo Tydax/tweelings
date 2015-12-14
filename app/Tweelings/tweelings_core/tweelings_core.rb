@@ -7,35 +7,32 @@ module Tweelings
 
       ##
       # Caches to store pending tweets 
-      @@indexes
+      @@cache
 
       def self.fetch_tweets(criteria)
-        cache = []
+        @@cache = []
+        nb = 0
         TWITTER_CLIENT.fetch_tweets(criteria).each do |raw_tweet|
-          cache << Tweelings::Object::Tweeling.from_raw(raw_tweet, criteria)
+          tweet = Tweelings::Object::Tweeling.from_raw(raw_tweet, criteria)
+          tweet.id = nb
+          nb += 1
+          @@cache << tweet
         end
-        DATABASE.save(*cache)
-        # Store indexes saved
-        @@indexes = cache.each_with_object([]) { |tweeling, a| a << tweeling.id if tweeling.id }
-        cache.size
+        @@cache.size
       end
 
       def self.clean_tweets        
-        cache = DATABASE.fetch(*@@indexes)
-        cache.each { |tweeling| tweeling.cleaned_text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text) }
-        DATABASE.update(*cache)
+        @@cache.each { |tweeling| tweeling.cleaned_text = Tweelings::Business::Algorithm.clean_tweet(tweeling.text) }
       end
 
       def self.annotate_tweets(algorithm, param)
-        cache = DATABASE.fetch(*@@indexes)
-
         case algorithm
         when "Lexique"
-          cache.each do |tweeling|
+          @@cache.each do |tweeling|
             tweeling.notation = Tweelings::Business::Algorithm.annotate_using_keywords(tweeling.text)
           end
         when "KNN"
-          cache.each do |tweeling|
+          @@cache.each do |tweeling|
             base = DATABASE.fetch_verified
             tweeling.notation = Tweelings::Business::Algorithm.annotate_using_knn(text, base, param)
           end
@@ -43,15 +40,16 @@ module Tweelings
           puts "[Tweelings_Core]["
         end
 
-        DATABASE.update(*cache)
-        cache
+        Array.new(@@cache)
       end
 
       def self.update_tweets(hashes)
-        hashes.each { |hash| hash[:verified] = true }
-        DATABASE.update_annotation(*hashes)
-        # @todo delete this line
-        # DATABASE.delete(*@@indexes)
+        hashes.each do |hash|
+          tweet = @@cache.select { |tweeling| tweeling.id == hash[:id] }.first
+          tweet.notation = hash[:notation]
+          tweet.verified = true
+        end
+        DATABASE.save(*@@cache)
       end
 
       def self.get_base(theme = nil)

@@ -36,7 +36,7 @@ function fetchTweets() {
             for (var i = 0; i < result.result.length; i++) {
                 tweets.push(JSON.parse(result.result[i]));
             };
-            console.log("Fetched " + result.result.length + " tweets!");
+            console.log("Fetched " + result.result + " tweets!");
             lockForm(false);
             updateTweetList(tweets);
             cleanTweets();
