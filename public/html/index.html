@@ -12,6 +12,7 @@
     </div>
 
     <div id="notifications" class="invisible"></div>
+    <div id="confirmations" class="invisible"></div>
     <div id="error" class="invisible">
         <p>No error.</p>
     </div>
@@ -53,40 +54,46 @@
             </ul>
         </div>
 
-        <div id="search-config" class="bloc">
-            <h2>
-                <img src="resources/loupe.png">
-                Search / Config
-            </h2>
-            <form name="search-tweets" id="search-form" action="POST">
-                <div id="search-bar">
-                    <input id="search-form-theme" name="theme" type="text" placeholder="Rechercher sur Twitter">
-                </div>
-                <div id="algorithm">
-                    Annotate using: 
-                    <select name="algorithm">
-                        <option>Lexique</option>
-                        <option>KNN</option>
-                        <option>Bayes</option>
-                    </select>
-                    <span id="neighbours" class="invisible">
-                        with
-                        <select name="knn_nb_neighbours" disabled>
-                            <option>1</option>
-                            <option>5</option>
-                            <option>10</option>
-                            <option>20</option>
-                            <option>50</option>
+        <div id="right_page">
+            <div id="search-config" class="bloc">
+                <h2>
+                    <img src="resources/loupe.png">
+                    Search / Config
+                </h2>
+                <form name="search-tweets" id="search-form" action="POST">
+                    <div id="search-bar">
+                        <input id="search-form-theme" name="theme" type="text" placeholder="Rechercher sur Twitter">
+                    </div>
+                    <div id="algorithm">
+                        Annotate using: 
+                        <select name="algorithm">
+                            <option>Lexique</option>
+                            <option>KNN</option>
+                            <option>Bayes</option>
                         </select>
-                        neighbours
-                    </span>
-                </div>
-                <!-- <div id="proxy">
-                    Proxy : 
-                    <input id="proxy" name="proxy-host" type="text" placeholder="Host">
-                    <input id="proxy" name="proxy-port" type="text" placeholder="Port">
-                </div> -->
-            </form>
+                        <span id="neighbours" class="invisible">
+                            with
+                            <select name="knn_nb_neighbours" disabled>
+                                <option>1</option>
+                                <option>5</option>
+                                <option>10</option>
+                                <option>20</option>
+                                <option>50</option>
+                            </select>
+                            neighbours
+                        </span>
+                    </div>
+                    <!-- <div id="proxy">
+                        Proxy : 
+                        <input id="proxy" name="proxy-host" type="text" placeholder="Host">
+                        <input id="proxy" name="proxy-port" type="text" placeholder="Port">
+                    </div> -->
+                </form>
+            </div>
+            <div id="logs" class="bloc">
+                <h2 id="title">Logs: </h2>
+                <div id="console"></div>  
+            </div>
         </div>
     </div>
     <script type="text/javascript" src="javascript/interface.js"></script>

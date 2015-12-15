@@ -21,6 +21,7 @@ h1 {
 #page {
     margin: auto;
     text-align: center;
+    vertical-align: middle;
     width: 100%;
 }
 
@@ -69,22 +70,22 @@ h1 {
     padding: 8px;
 }
 
-#notifications {
-    border: 1px solid #e1e8ed;
-    border-top: none;
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 0 0.2em 0 rgba(255,255,255,0.6);
+#notifications, #confirmations{
     color: #292f33;
     margin: auto;
     padding: 0;
     text-align: center;
     vertical-align: top;
-    width: 60%;
 }
 
-#notifications p {
+#notifications p, #confirmations p {
+    border: 1px solid #e1e8ed;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 0.2em 0 rgba(255,255,255,0.6);
+    display: inline-block;
     margin: 0;
-    padding: 8px;
+    padding: 8px 40px;
 }
 
 #button_save {
@@ -105,6 +106,7 @@ h1 {
 }
 
 #result {
+    margin: 1.25em 0.5em 0 0.5em;
     text-align: left;
     width: 57%;
 }
@@ -208,10 +210,21 @@ h1 {
     text-align: right;
 }
 
-#search-config {
+#right_page {
     width: 37%;
     height: 100%;
     font-size: 13px;
+    border-radius: 5px;
+    color: #292f33;
+    display: inline-block;
+    margin: 1.5em 0.5em 0 0.5em;
+    vertical-align: top;
+}
+
+#search-config {
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 #search-config div {
@@ -254,4 +267,25 @@ h1 {
 
 .tweet_bad {
     background-color: #ffcccc;
+}
+
+
+#logs {
+    font-size: 0.9em;
+    font-style: italic;
+    text-align: left;
+    width: 24.25em;
+}
+
+#logs #title {
+    box-shadow: 0 0 0.2em 0 rgba(51, 51, 51,0.8);
+    margin: 0;
+    padding: 1em 1.5em;
+}
+
+#console {
+    height: 17.70em;
+    padding: 1em 1.5em;
+    overflow: scroll;
+    box-shadow: 0 0 0.2em 0 rgba(51, 51, 51,0.8);
 }

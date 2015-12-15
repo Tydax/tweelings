@@ -37,11 +37,13 @@ function fetchTweets() {
                 tweets.push(JSON.parse(result.result[i]));
             };
             console.log("Fetched " + result.result + " tweets!");
+            log("Fetched " + result.result + " tweets!");
             lockForm(false);
             updateTweetList(tweets);
             cleanTweets();
         } else {
             console.log("Error code: " + result.code);
+            log("Error code: " + result.code);
             displayError(result.code, result.result);
         }
     });
@@ -53,6 +55,7 @@ function cleanTweets() {
         var tweets = [];
         if (result.code == 0) {
             console.log("Cleaned " + result.result.length + " tweets!");
+            log("Cleaned " + result.result.length + " tweets!");
             annotateTweets();
         }
     });
@@ -76,6 +79,7 @@ function annotateTweets() {
                 tweets.push(JSON.parse(result.result[i]));
             };
             console.log("Annotated " + result.result.length + " tweets!");
+            log("Annotated " + result.result.length + " tweets!");
             for (var i = 0; i < tweets.length; i++) {
                 switch(tweets[i].notation){
                     case 0:
@@ -115,8 +119,10 @@ function annotateTweetsManually() {
         var result = JSON.parse(response);
         if (result.code == 0) {
             console.log("Updated tweets!");
+            log("Updated tweets!");
         } else {
             console.log("Error code: " + result.code);
+            log("Error code: " + result.code);
             displayError(result.code, result.result);
         }
     });

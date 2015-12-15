@@ -111,7 +111,7 @@ function saveNotification() {
     notification.appendChild(button);
     notifications.appendChild(notification);
 
-    showNotification(true);
+    showNode("notifications", true);
 }
 
 /*
@@ -127,6 +127,34 @@ function removeManualAnnotationNodes() {
     };
 }
 
+function saveConfirmationNotification() {
+    var confirmations = document.getElementById("confirmations");
+
+    if(!document.getElementById("confirmation")) {
+        var confirmation = document.createElement("p");
+        confirmation.id = "confirmation";
+        var textNode = document.createTextNode("Tweets Saved.");
+        confirmation.appendChild(textNode);
+        confirmations.appendChild(confirmation);
+    } else {
+        var confirmation = document.getElementById("confirmation");
+    }
+
+    switch(confirmation.style.borderColor) {
+        case "green":
+            confirmation.style.borderColor = "blue";
+            break;
+        case "blue":
+            confirmation.style.borderColor = "green";
+            break;
+        default:
+            confirmation.style.borderColor = "green";
+            break;
+    }
+
+    showNode("confirmations", true);
+}
+
 function addNotification(text) {
     var notifications = document.getElementById("notifications");
     // Clean node
@@ -139,7 +167,7 @@ function addNotification(text) {
     notification.appendChild(textNode);
     notifications.appendChild(notification);
 
-    showNotification(true);
+    showNode("notifications", true);
 }
 
 function hideNotifications() {
@@ -177,12 +205,12 @@ function hideError() {
     errorNode.className = "invisible";
 }
 
-function showNotification(invisible) {
-    notificationsNode = document.getElementById("notifications");
+function showNode(name, invisible) {
+    node = document.getElementById(name);
     if(invisible) {
-        notificationsNode.className = "";
+        node.className = "";
     } else {
-        notificationsNode.className = "invisible";
+        node.className = "invisible";
     }
 }
 
@@ -256,4 +284,13 @@ function updateTweetList(tweets) {
         tweetNode = createTweetElement(tweets[i], i);
         tweetListNode.appendChild(tweetNode);
     };
+}
+
+function log(text) {
+    var console = document.getElementById("console");
+    var message = document.createElement("p");
+    message.className = "message";
+    message.innerHTML = text;
+    console.appendChild(message);
+    console.scrollTop = console.scrollHeight;
 }
