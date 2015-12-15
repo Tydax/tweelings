@@ -91,16 +91,7 @@ module Tweelings
             # Delete the furthest away tweet from close neighbours
             
             # Look for the furthest away tweet
-            furthest_tweet = nil
-            furthest_dist = -1
-
-            close_neighbours.each do |x|
-              dist = knn_dist_between(text, x.text)
-              if furthest_dist < dist
-                furthest_dist = dist
-                furthest_tweet = x
-              end
-            end
+            furthest_tweet = close_neighbours.min_by { |x| knn_dist_between(text, x.text) }
 
             # Replace the furthest away tweet with the new one
             close_neighbours.delete(furthest_tweet)
