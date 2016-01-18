@@ -7,7 +7,6 @@
 
 ## Algorithmes
 * Réusiner la classe Algorithm pour n’utiliser que des objets Tweelings et non pas un mélange de String et de Tweeling (plus cohérent) (cela impactera le core)
-* Implémentation de l’algorithme de classification bayésienne
 
 ## Fonctionnalités
 * Implémenter l’annotation manuelle de tweets depuis l’interface
